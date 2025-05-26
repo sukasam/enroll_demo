@@ -20,4 +20,9 @@ jobs:
         uses: codium-ai/pr-agent@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} 
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PR_AGENT_REVIEW_COMMENT_TYPE: "suggestions"
+          PR_AGENT_REVIEW_COMMENT_LANGUAGE: "th"
+          PR_AGENT_REVIEW_COMMENT_STYLE: "detailed"
+          PR_AGENT_REVIEW_COMMENT_SEVERITY: "all"
+          PR_AGENT_REVIEW_COMMENT_CATEGORIES: "security,performance,best-practices,maintainability" 

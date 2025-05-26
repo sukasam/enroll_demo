@@ -24,7 +24,7 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install @openai/api
+        run: npm install openai
 
       - name: Debug Environment
         run: |
@@ -52,7 +52,7 @@ jobs:
               
               # Call OpenAI API for code review
               REVIEW=$(node -e "
-                const { OpenAI } = require('@openai/api');
+                const OpenAI = require('openai');
                 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
                 
                 async function reviewCode() {

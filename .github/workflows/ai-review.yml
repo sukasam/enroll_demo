@@ -1,0 +1,21 @@
+name: AI Code Reviewer
+
+on:
+  pull_request:
+    types: [opened, synchronize]  # ทำงานเมื่อมี PR ใหม่ หรือมี push ใหม่เข้ามาใน PR
+
+permissions: write-all  # ให้สิทธิ์คอมเมนต์ใน PR ได้
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run AI Code Reviewer
+        uses: villesau/ai-code-reviewer@v2.7.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_MODEL: "gpt-4o-mini"  # หรือ gpt-4, gpt-4o ถ้าต้องการแม่นยำขึ้น
+          exclude: "**/*.md, **/dist/**, **/node_modules/**"  # ข้ามไฟล์ไม่ต้องรีวิว

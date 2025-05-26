@@ -397,14 +397,4 @@ const AppWrapperWithLD = launchDarklyClientSideID
       })(AppWrapper as unknown as ComponentType)
     : AppWrapper;
 
-const test = (): JSX.Element => <div>Test</div>;
-
-const test2 = (): JSX.Element => <div>Test2</div>;
-
-const test3 = (): JSX.Element => <div>Test3</div>;
-
-const test4 = (): JSX.Element => <div>Test4</div>;
-
-const test5 = (): JSX.Element => <div>Test5</div>;
-
 export default AppWrapperWithLD;

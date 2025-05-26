@@ -398,3 +398,22 @@ const AppWrapperWithLD = launchDarklyClientSideID
     : AppWrapper;
 
 export default AppWrapperWithLD;
+
+/**
+ * Adds two numbers together with proper type checking
+ * @param a - First number to add
+ * @param b - Second number to add
+ * @returns The sum of the two numbers
+ * @throws Error if inputs are not valid numbers
+ */
+function addNumbers(a: number, b: number): number {
+    if (typeof a !== "number" || typeof b !== "number") {
+        throw new Error("Both inputs must be numbers");
+    }
+
+    if (!Number.isFinite(a) || !Number.isFinite(b)) {
+        throw new Error("Inputs must be finite numbers");
+    }
+
+    return a + b;
+}

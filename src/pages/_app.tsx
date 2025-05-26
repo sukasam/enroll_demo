@@ -397,20 +397,23 @@ const AppWrapperWithLD = launchDarklyClientSideID
       })(AppWrapper as unknown as ComponentType)
     : AppWrapper;
 
-const test = (): JSX.Element => <div>Test</div>;
-const test2 = (): JSX.Element => <div>Test2</div>;
-const test3 = (): JSX.Element => <div>Test3</div>;
-const test4 = (): JSX.Element => <div>Test4</div>;
-const test5 = (): JSX.Element => <div>Test5</div>;
-const test6 = (): JSX.Element => <div>Test6</div>;
-const test7 = (): JSX.Element => <div>Test7</div>;
-const test8 = (): JSX.Element => <div>Test8</div>;
-const test9 = (): JSX.Element => <div>Test9</div>;
-const test10 = (): JSX.Element => <div>Test10</div>;
-const test11 = (): JSX.Element => <div>Test11</div>;
-const test12 = (): JSX.Element => <div>Test12</div>;
-const test13 = (): JSX.Element => <div>Test13</div>;
-const test14 = (): JSX.Element => <div>Test14</div>;
-const test15 = (): JSX.Element => <div>Test15</div>;
-const test16 = (): JSX.Element => <div>Test16</div>;
 export default AppWrapperWithLD;
+
+/**
+ * Adds two numbers together with proper type checking
+ * @param a - First number to add
+ * @param b - Second number to add
+ * @returns The sum of the two numbers
+ * @throws Error if inputs are not valid numbers
+ */
+function addNumbers(a: number, b: number): number {
+    if (typeof a !== "number" || typeof b !== "number") {
+        throw new Error("Both inputs must be numbers");
+    }
+
+    if (!Number.isFinite(a) || !Number.isFinite(b)) {
+        throw new Error("Inputs must be finite numbers");
+    }
+
+    return a + b;
+}

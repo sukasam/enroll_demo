@@ -398,5 +398,6 @@ const AppWrapperWithLD = launchDarklyClientSideID
     : AppWrapper;
 
 const test = (): JSX.Element => <div>Test</div>;
+const test2 = (): JSX.Element => <div>Test2</div>;
 
 export default AppWrapperWithLD;

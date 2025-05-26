@@ -2,7 +2,7 @@ name: AI Code Review
 
 on:
   pull_request:
-    branches: [main] # ทำงานเมื่อ PR มุ่งเข้าสู่ main (สามารถลบหรือเปลี่ยนชื่อ branch ได้)
+    branches: [develop] # ทำงานเมื่อ PR มุ่งเข้าสู่ develop (สามารถลบหรือเปลี่ยนชื่อ branch ได้)
     types: [opened, synchronize, reopened]
 
 jobs:

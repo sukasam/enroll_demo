@@ -2,6 +2,7 @@ name: AI Code Review
 
 on:
   pull_request:
+    branches: [main] # ทำงานเมื่อ PR มุ่งเข้าสู่ main (สามารถลบหรือเปลี่ยนชื่อ branch ได้)
     types: [opened, synchronize, reopened]
 
 jobs:
@@ -10,19 +11,26 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: AI Code Review
+      - name: Run CodiumAI PR Agent
         uses: codium-ai/pr-agent@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: gpt-4o-mini
           PR_AGENT_REVIEW_COMMENT_TYPE: "suggestions"
           PR_AGENT_REVIEW_COMMENT_LANGUAGE: "th"
           PR_AGENT_REVIEW_COMMENT_STYLE: "detailed"
           PR_AGENT_REVIEW_COMMENT_SEVERITY: "all"
-          PR_AGENT_REVIEW_COMMENT_CATEGORIES: "security,performance,best-practices,maintainability" 
+          PR_AGENT_REVIEW_COMMENT_CATEGORIES: "security,performance,best-practices,maintainability"
+          PR_AGENT_SYSTEM_PROMPT: |
+            ให้คุณแสดงความเห็นต่อโค้ดด้วยความนุ่มนวลและเป็นมืออาชีพ
+            พยายามอธิบายเหตุผลที่เสนอการแก้ไขอย่างชัดเจนและเข้าใจง่าย
+            ถ้าเหมาะสม ให้แนะนำตัวอย่างโค้ดที่แก้ไขแล้วมาด้วย
+            หลีกเลี่ยงการใช้คำที่ดูตำหนิ เช่น "ผิด" หรือ "แย่"

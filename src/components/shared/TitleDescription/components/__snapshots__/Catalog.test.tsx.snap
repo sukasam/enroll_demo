@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Catalog renders correctly with no purchase market 1`] = `<DocumentFragment />`;
+
+exports[`Catalog renders correctly with selected UFG product 1`] = `
+<DocumentFragment>
+  <div
+    class="css-1rmms3i-catalogContainer"
+    data-testid="catalog_unimate_flavor"
+  >
+    <div>
+      <span>
+        catalog_unimate_flavor
+      </span>
+       Lemon
+    </div>
+    <div>
+      <span>
+        catalog_balance_flavor
+      </span>
+       Orange
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Catalog renders correctly with selected digital product 1`] = `
+<DocumentFragment>
+  <div
+    data-testid="catalog_digital_product"
+  >
+    <span>
+      catalog_basic_distributor_only
+    </span>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Catalog renders null when no products are selected and not in no purchase market 1`] = `<DocumentFragment />`;

@@ -1,0 +1,13 @@
+**/node_modules/*
+**/out/*
+**/.next/*
+*.css
+build/
+src/build/
+src/store/
+/src/services/gtm.js
+src/services/GoogleTagManagerService.js
+/scripts/blueGreen.js
+/scripts/test-automation/trigger-travis-build.js
+src/components/pages/Payment/**
+

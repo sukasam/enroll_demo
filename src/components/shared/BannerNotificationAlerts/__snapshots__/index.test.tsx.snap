@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BannerNotificationAlerts renders correctly 1`] = `
+<div>
+  <div
+    class="css-nmzf5j"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="banner"
+      >
+        <div
+          class="message"
+        >
+          test.message
+        </div>
+        <div
+          class="children"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

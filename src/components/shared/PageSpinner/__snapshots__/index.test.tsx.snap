@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageSpinner matches snapshot 1`] = `
+<div>
+  <div
+    class="css-1n2mv2k"
+  >
+    <div
+      data-testid="page_spinner"
+      height="100px"
+    />
+  </div>
+</div>
+`;

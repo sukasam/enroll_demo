@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddressSuggestionDropdown renders correctly 1`] = `<DocumentFragment />`;
+
+exports[`AddressSuggestionDropdown renders correctly when closed 1`] = `<DocumentFragment />`;
+
+exports[`AddressSuggestionDropdown renders correctly with address IDs 1`] = `<DocumentFragment />`;

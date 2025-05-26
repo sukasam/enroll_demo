@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Payment renders correctly when CreditCard payment method is selected 1`] = `
+<DocumentFragment>
+  <div
+    class="description"
+  >
+    <div
+      class="icon"
+    >
+      <img
+        alt=""
+        data-testid="credit_card_image"
+        height="18"
+        src="/images/credit-card.png"
+        width="24"
+      />
+    </div>
+    <div
+      class="text"
+      data-testid="credit_card_label"
+    >
+      <span>
+        Credit Card
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Payment renders correctly when PayPal payment method is selected 1`] = `
+<DocumentFragment>
+  <div
+    class="description"
+  >
+    <div
+      class="icon"
+    >
+      <img
+        alt=""
+        data-testid="paypal_image"
+        height="18"
+        src="/images/paypal.png"
+        width="24"
+      />
+    </div>
+    <div
+      class="text"
+      data-testid="paypal_label"
+    >
+      <span>
+        PayPal
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Payment renders correctly when no payment method is selected 1`] = `
+<DocumentFragment>
+  <div
+    class="description"
+  >
+    <span>
+      payment_select_payment_method
+    </span>
+  </div>
+</DocumentFragment>
+`;

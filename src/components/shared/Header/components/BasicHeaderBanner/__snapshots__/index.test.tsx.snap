@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BasicHeaderBanner matches snapshot when rendered 1`] = `
+<div
+  data-bannerflagld="true"
+  data-currentmarket="US"
+  data-testid="banner-notification-alerts"
+/>
+`;

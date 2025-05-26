@@ -1,0 +1,63 @@
+{
+  "compilerOptions": {
+      "target": "esnext",
+      "lib": ["dom", "dom.iterable", "esnext"],
+      "types": ["jest", "node"],
+      "allowJs": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "forceConsistentCasingInFileNames": true,
+      "noEmit": true,
+      "incremental": true,
+      "esModuleInterop": true,
+      "module": "CommonJS",
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "allowSyntheticDefaultImports": true,
+      "isolatedModules": true,
+      "sourceMap": true,
+      "noImplicitAny": true,
+      "jsx": "preserve",
+      "baseUrl": "./src",
+      "paths": {
+          "Components/*": ["./components/*"],
+          "Constants/*": ["./constants/*"],
+          "Contexts/*": ["./contexts/*"],
+          "Forms/*": ["./components/Forms/*"],
+          "FormElements/*": ["./components/Forms/Elements/*"],
+          "FormElements": ["./components/Forms/Elements/index"],
+          "Hooks/*": ["./hooks/*"],
+          "Hydra/*": ["./services/Hydra/*"],
+          "Pages/*": ["./pages/*"],
+          "Root/*": ["../*"],
+          "Services/*": ["./services/*"],
+          "Shared/*": ["../shared/*"],
+          "Slices/*": ["./store/slices/*"],
+          "Store/*": ["./store/*"],
+          "Thunks/*": ["./store/thunks/*"],
+          "Styled/*": ["./components/Styled/*"],
+          "Styles/*": ["./styles/*"],
+          "Utils/*": ["./services/utils/*"],
+          "GlobalLayout": ["./components/GlobalLayout/index.js"],
+          "Types/*": ["./types/*"]
+      }
+  },
+  "exclude": [
+      "./node_modules",
+      "./customFields",
+      "./docs",
+      "./scripts",
+      "./build",
+      "./public"
+  ],
+  "include": [
+      "next-env.d.ts",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx",
+      "pages/_app.hooks.js",
+      "pages/_document.js",
+      "pages/_app.tsx"
+  ]
+}

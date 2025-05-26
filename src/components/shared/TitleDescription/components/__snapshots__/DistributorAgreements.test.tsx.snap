@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DistributorAgreementsHooks renders correctly when agreement is complete and has a valid signature date 1`] = `
+<DocumentFragment>
+  <div
+    data-testid="agreement_signed"
+  >
+    <span>
+      agreement_signed
+    </span>
+    : 12/19/2023, 7:22 PM
+  </div>
+</DocumentFragment>
+`;
+
+exports[`DistributorAgreementsHooks renders correctly when agreement is not complete 1`] = `<DocumentFragment />`;
+
+exports[`DistributorAgreementsHooks renders null when agreement is not complete 1`] = `<DocumentFragment />`;
+
+exports[`DistributorAgreementsHooks renders null when there is no signature date 1`] = `<DocumentFragment />`;

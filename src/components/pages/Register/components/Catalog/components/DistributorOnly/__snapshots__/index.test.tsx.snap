@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DistributorOnly renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="css-xkzasc"
+  >
+    <h3>
+      Distributor Only
+    </h3>
+    <div>
+      <span>
+        0
+      </span>
+       | PV: 0 | 
+      <span>
+        Payment Distributor Only
+      </span>
+    </div>
+    <p>
+      Description
+    </p>
+    <button
+      class="continue-button"
+      type="button"
+    >
+      Continue
+    </button>
+  </div>
+</DocumentFragment>
+`;

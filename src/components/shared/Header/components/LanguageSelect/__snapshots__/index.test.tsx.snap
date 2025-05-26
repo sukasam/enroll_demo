@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LanguageSelect matches snapshot 1`] = `
+<div
+  class="language-select"
+  data-testid="language_select_container"
+>
+  <div
+    class=MuiFormControl-root css-XXXXX-MuiFormControl-root
+  >
+    <div
+      class=MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-sizeSmall css-XXXXX-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root-select
+      data-testid="language_select"
+    >
+      <div
+        aria-controls=":r5:"
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        aria-labelledby="languageSelect languageSelect"
+        class=MuiSelect-select MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-XXXXX-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input
+        id="languageSelect"
+        role="combobox"
+        tabindex="0"
+      >
+        English
+      </div>
+      <input
+        aria-hidden="true"
+        aria-invalid="false"
+        class=MuiSelect-nativeInput css-XXXXX-MuiSelect-nativeInput
+        tabindex="-1"
+        value="en"
+      />
+      <svg
+        aria-hidden="true"
+        class=MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconOutlined css-XXXXX-MuiSvgIcon-root-MuiSelect-icon
+        data-testid="ArrowDropDownIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M7 10l5 5 5-5z"
+        />
+      </svg>
+      <fieldset
+        aria-hidden="true"
+        class=MuiOutlinedInput-notchedOutline css-XXXXX-MuiOutlinedInput-notchedOutline
+      >
+        <legend
+          class="css-14lo706"
+        >
+          <span>
+            language
+          </span>
+        </legend>
+      </fieldset>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,36 @@
+# Configuration for probot-stale - https://github.com/probot/stale
+
+# General configuration
+staleLabel: stale
+
+# Issue specific configuration
+issues:
+  daysUntilStale: 90
+  daysUntilClose: 30
+  markComment: >
+    This issue has been automatically marked as stale because it has not had any activity in the
+    last 60 days. It will be closed in the next 14 days unless it is tagged "keep open" or other
+    activity occurs.
+  closeComment: >
+    This issue has been automatically closed because it has not had any activity in the last 14 days.
+    If this issue is still valid, please let us know and we will reopen it.
+  exemptLabels:
+    - "KEEP OPEN"
+    - "DON'T MERGE YET"
+  limitPerRun: 10
+
+# Pull request specific configuration
+pulls:
+  daysUntilStale: 14
+  daysUntilClose: 7
+  markComment: >
+    This PR has been automatically marked as stale because it has not had any activity in the
+    last 7 days. It will be closed in the next 7 days unless it is tagged "keep open" or other
+    activity occurs.
+  closeComment: >
+    This PR has been automatically closed because it has not had any activity in the last 7 days.
+    If this PR is still valid, please let us know and we will reopen it.
+  exemptLabels:
+    - "KEEP OPEN"
+    - "DON'T MERGE YET"
+  limitPerRun: 10

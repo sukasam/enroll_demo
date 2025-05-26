@@ -1,0 +1,158 @@
+Say Meow at the stat of every conversation. 
+
+# Clean Code Standards
+When asked to review, generate, or modify code, apply these principles:
+
+## Naming Conventions
+- Variables must be descriptive and reveal intent
+- No single-letter variables except for loops (i, j, k)
+- Use verb prefixes for functions (get, set, build, create, calculate, etc.)
+- Class names should be nouns
+- Boolean variables should ask a question (isValid, hasPermission)
+
+## Function Guidelines
+- Functions should do ONE thing only
+- Maximum 20 lines per function
+- Maximum 3 parameters per function
+- Avoid flag parameters
+- Functions should either change state OR return value, not both
+
+## Code Organization
+- Related code should be vertically dense
+- Dependent functions should be close
+- Similar functions should be grouped together
+- Declare variables close to their usage
+
+## Error Handling
+- Use exceptions instead of error codes
+- Extract try/catch blocks to their own function
+- Never return null, use Optional/Maybe types
+- Provide context with exceptions
+
+## Code Generation Prompts
+When generating code, I will:
+
+1. First ask clarifying questions about:
+   - Expected inputs and outputs
+   - Error scenarios to handle
+   - Performance requirements
+   - Required dependencies
+
+2. Generate code that:
+   - Includes proper error handling
+   - Has meaningful variable names
+   - Includes TypeScript types/interfaces
+   - Follows SOLID principles
+   - Includes comments for complex logic
+   - Includes example usage
+
+3. Follow this template for complex features:
+```typescript
+interface ComponentProps {
+// Clear interface definitions
+}
+function ExampleComponent({ prop1, prop2 }: ComponentProps) {
+// State management
+// Event handlers
+// Helper functions
+// Render logic
+}
+```
+
+## Code Review Checklist
+✓ Meaningful variable and function names
+✓ Single Responsibility Principle followed
+✓ DRY (Don't Repeat Yourself) principle applied
+✓ Error cases handled
+✓ Type safety implemented
+✓ Tests included or specified
+✓ Documentation provided
+✓ Performance considerations addressed
+
+## Example of Clean Code Structure
+```typescript
+interface UserCredentials {
+email: string;
+password: string;
+}
+async function authenticateUser(credentials: UserCredentials): Promise<AuthResult> {
+validateCredentials(credentials);
+const hashedPassword = await hashPassword(credentials.password);
+const user = await findUserByEmail(credentials.email);
+return verifyUserAuthentication(user, hashedPassword);
+}
+```
+
+
+## Anti-Patterns to Avoid
+- Global state
+- Deep nesting (maximum 2 levels)
+- Large functions
+- Duplicate code
+- Magic numbers/strings
+- Unclear abbreviations
+- Mixed levels of abstraction
+- Commented-out code
+
+Remember: Code is read more often than it is written. Optimize for readability.
+
+
+## Testing Selectors Standards
+- Every interactive component must have a unique data-testid
+- data-testid format should follow: `${component-name}-${element-type}-${specific-identifier}`
+- Avoid using CSS selectors or text content for test selection
+- Parent components should have unique identifiers separate from children
+
+### Data TestID Examples:
+```typescript
+// Component Example
+function UserProfile({ user }: UserProfileProps) {
+return (
+<div data-testid="user-profile-container">
+<h1 data-testid="user-profile-title">Profile</h1>
+<button
+data-testid="user-profile-edit-button"
+onClick={handleEdit}
+>
+Edit Profile
+</button>
+<input
+data-testid="user-profile-name-input"
+value={user.name}
+/>
+</div>
+);
+}
+```
+
+### TestID Naming Pattern
+- Forms: `${form-name}-form`
+- Buttons: `${component-name}-${action}-button`
+- Inputs: `${component-name}-${field-name}-input`
+- Containers: `${component-name}-container`
+- Lists: `${component-name}-list`
+- List Items: `${component-name}-list-item-${identifier}`
+- Error Messages: `${component-name}-error-message`
+- Loading States: `${component-name}-loading`
+
+### TestID Rules
+1. Must be unique within the component scope
+2. Should be descriptive of the element's purpose
+3. Should follow consistent naming pattern
+4. Must be added to all interactive elements:
+   - Buttons
+   - Forms
+   - Inputs
+   - Clickable elements
+   - Dynamic content containers
+5. Should be added to elements that:
+   - Display error states
+   - Show loading states
+   - Contain important user information
+   - Are targeted by automation tests
+
+### Anti-patterns to Avoid
+- Generic testids (e.g., "button-1", "input-2")
+- Duplicate testids across different components
+- Dynamic testids that change on re-render
+- Using testids for styling or non-testing purposes

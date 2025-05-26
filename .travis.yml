@@ -1,0 +1,115 @@
+# Travis CI Configuration for Enroll Application
+
+# Global Environment Variables
+env:
+    global:
+        - DOCKER_COMPOSE_VERSION=1.27.4
+        - RUBY_VERSION=3.1.0
+
+# Base Configuration
+sudo: required
+dist: focal # Ubuntu 20.04
+language: node_js
+services:
+    - docker
+
+# SSH Known Hosts Configuration
+addons:
+    ssh_known_hosts:
+        # Development Servers
+        - 44.205.177.60 # Dev: Enroll QA
+        - 52.200.122.88 # Dev: Enroll Stg
+        
+        # Production Servers
+        - 3.93.170.179 # Enroll - 1
+        - 54.90.102.88 # Enroll - 2
+        
+        # Blue Environment Servers
+        - 52.2.207.201 # Enroll-Blue-1
+        - 44.207.234.142 # Enroll-Blue-2
+        
+        # Green Environment Servers
+        - 44.198.49.59 # Enroll-Green-1
+        - 98.85.191.7 # Enroll-Green-2
+
+# Node.js Version
+node_js:
+    - 18.19.0
+
+# Installation Steps
+install:
+    # Install shelljs for command execution
+    - npm install shelljs
+    
+    # Install docker-compose
+    - sudo rm /usr/local/bin/docker-compose
+    - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+    - chmod +x docker-compose
+    - sudo mv docker-compose /usr/local/bin
+    
+    # Install AWS CLI
+    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.1.24.zip" -o "awscliv2.zip"
+    - unzip awscliv2.zip
+    - sudo ./aws/install
+
+# Deployment Jobs
+jobs:
+    include:
+        # QA Deployment
+        - stage: qa
+          if: branch = develop
+          deploy:
+              provider: script
+              script: bash scripts/qa.sh qa
+              skip_cleanup: true
+              #edge: true # Opt-in to dpl v2
+              on:
+                  branch: $TRAVIS_BRANCH
+        #   after_deploy:
+        #       - mkdir -p enrollment/results
+        #       - node scripts/test-automation/trigger-travis-build.js channel_name=growth-test-results project_name=enrollment suite=smoke full_report=off
+        # Staging Deployment
+        - stage: release
+          if: branch = release
+          deploy:
+              provider: script
+              script: bash scripts/qa.sh stg
+              skip_cleanup: true
+              #edge: true # Opt-in to dpl v2
+              on:
+                  branch: $TRAVIS_BRANCH
+          after_deploy:
+              - npm run testCoverage
+              - node scripts/sheets/main.js
+        # Development Testing
+        - stage: DevTesting
+          if: branch = GROW-8488/klarna-payment-eu
+          env:
+              - NEXT_PUBLIC_DEPLOY_URL=https://enrollment-stg.unicityqa.com
+          deploy:
+              provider: script
+              script: bash scripts/qa.sh stg
+              skip_cleanup: true
+              #edge: true # Opt-in to dpl v2
+              on:
+                  branch: $TRAVIS_BRANCH
+        # Beta Release
+        - stage: releaseToBeta
+          if: branch = releaseToBeta
+          deploy:
+              provider: script
+              script: bash scripts/prod.sh beta
+              skip_cleanup: true
+              #edge: true # Opt-in to dpl v2
+              on:
+                  branch: $TRAVIS_BRANCH
+        # Production Release
+        - stage: prod
+          if: branch = master
+          deploy:
+              provider: script
+              script: bash scripts/prod.sh
+              skip_cleanup: true
+              #edge: true # Opt-in to dpl v2
+              on:
+                  branch: $TRAVIS_BRANCH

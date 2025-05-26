@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Landing renders correctly 1`] = `
+<div>
+  <div
+    class=MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4 css-XXXXX-MuiGrid-root
+  >
+    <div
+      class=MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8 css-XXXXX-MuiGrid-root
+    >
+      <div
+        data-testid="login-content"
+      />
+    </div>
+    <div
+      class=MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4 aside-wrapper css-XXXXX-MuiGrid-root
+      data-testid="starting_business_just_become_easier_section"
+    >
+      <div
+        data-testid="aside"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CurrencyFormatter should render 'Free' when children is 0 and allowFree is true 1`] = `
+<span>
+  right_column_payment_shipping_price
+</span>
+`;
+
+exports[`CurrencyFormatter should render formatted currency 1`] = `$1,000.00`;
+
+exports[`CurrencyFormatter should render formatted currency with custom currency 1`] = `€1,000.00`;
+
+exports[`CurrencyFormatter should render spinner when children is NaN 1`] = `
+<div
+  data-testid="spinner"
+>
+  Spinner
+</div>
+`;
+
+exports[`CurrencyFormatter should render spinner when children is null 1`] = `
+<div
+  data-testid="spinner"
+>
+  Spinner
+</div>
+`;
+
+exports[`CurrencyFormatter should render spinner when children is undefined 1`] = `
+<div
+  data-testid="spinner"
+>
+  Spinner
+</div>
+`;

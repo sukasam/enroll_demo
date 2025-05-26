@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleDescription renders correctly with DistributorAgreementsSection sectionType 1`] = `
+<DocumentFragment>
+  <div
+    class="css-jmz7qs"
+  >
+    <div>
+      Distributor Agreements Component
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`TitleDescription renders correctly with PackSection sectionType 1`] = `
+<DocumentFragment>
+  <div
+    class="css-jmz7qs"
+  >
+    <div>
+      Catalog Component
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`TitleDescription renders correctly with PaymentSection sectionType 1`] = `
+<DocumentFragment>
+  <div
+    class="css-jmz7qs"
+  />
+</DocumentFragment>
+`;
+
+exports[`TitleDescription renders correctly with ShippingSection sectionType 1`] = `
+<DocumentFragment>
+  <div
+    class="css-jmz7qs"
+  >
+    <div>
+      Shipping Address Component
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`TitleDescription renders correctly with UpdateAccount sectionType 1`] = `
+<DocumentFragment>
+  <div
+    class="css-jmz7qs"
+  />
+</DocumentFragment>
+`;
+
+exports[`TitleDescription renders correctly with an invalid sectionType 1`] = `
+<DocumentFragment>
+  <div
+    class="css-jmz7qs"
+  >
+    <div>
+      Title Description sectionType not valid
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -1,0 +1,20 @@
+services:
+  prod:
+    image: prod:latest
+    container_name: prod
+  qa:
+    image: qa:latest
+    container_name: qa
+  enroll:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    env_file:
+      - .env
+    image: enroll:latest
+    container_name: enroll
+    restart: always
+    ports:
+      - '443:443'
+      - '80:80'

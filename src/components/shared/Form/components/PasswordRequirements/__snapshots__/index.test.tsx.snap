@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PasswordRequirements matches snapshot 1`] = `
+<div
+  class="passwordRequirements"
+>
+  <div
+    class="passwordLabel"
+    data-testid="create_account_password_must"
+  >
+    create_account_password_must
+  </div>
+  <ul>
+    <li
+      class="initial"
+      data-testid="create_account_password_requirement_1"
+    >
+      create_account_password_requirement_1
+    </li>
+    <li
+      class="initial"
+      data-testid="create_account_password_requirement_2"
+    >
+      create_account_password_requirement_2
+    </li>
+    <li
+      class="initial"
+      data-testid="create_account_password_requirement_3"
+    >
+      create_account_password_requirement_3
+    </li>
+    <li
+      class="initial"
+      data-testid="create_account_password_requirement_4"
+    >
+      create_account_password_requirement_4
+    </li>
+    <li
+      class="initial"
+      data-testid="create_account_password_requirement_5"
+    >
+      create_account_password_requirement_5
+    </li>
+  </ul>
+</div>
+`;

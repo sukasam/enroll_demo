@@ -1,0 +1,225 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Landing renders correctly with referrer 1`] = `
+<DocumentFragment>
+  <div
+    class=MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4 css-XXXXX-MuiGrid-root
+  >
+    <div
+      class=MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8 css-XXXXX-MuiGrid-root
+    >
+      <div
+        data-testid="mock-home-content"
+      />
+    </div>
+    <div
+      class=MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4 aside-wrapper css-XXXXX-MuiGrid-root
+      data-testid="starting_business_just_become_easier_section"
+    >
+      <div
+        class="tile aside"
+      >
+        <div
+          class="banner"
+        >
+          <div
+            class="overlay"
+            data-testid="home_page_overlay"
+          />
+          <div
+            class="content"
+          >
+            <div
+              class="title"
+              data-testid="right_column_starting_your_business_just_got_easier"
+            >
+              right_column_starting_your_business_just_got_easier
+            </div>
+          </div>
+        </div>
+        <div
+          class="title"
+          data-testid="right_column_your_business_your_way"
+        >
+          right_column_your_business_your_way
+        </div>
+        <p
+          data-testid="right_column_unicity_help_become_leader"
+        >
+          right_column_unicity_help_become_leader
+        </p>
+        <ul>
+          <li
+            data-testid="right_column_wholesale_product_pricing"
+          >
+            right_column_wholesale_product_pricing
+          </li>
+          <li
+            data-testid="right_column_earn_commissions_product_sales"
+          >
+            right_column_earn_commissions_product_sales
+          </li>
+          <li
+            data-testid="right_column_build_your_business_your_way"
+          >
+            right_column_build_your_business_your_way
+          </li>
+          <li
+            data-testid="right_column_growth_incentives"
+          >
+            right_column_growth_incentives
+          </li>
+          <li
+            data-testid="right_column_training_education"
+          >
+            right_column_training_education
+          </li>
+          <li
+            data-testid="right_column_business_building_tools"
+          >
+            right_column_business_building_tools
+          </li>
+          <li
+            data-testid="right_column_networking_opportunities"
+          >
+            right_column_networking_opportunities
+          </li>
+          <li
+            data-testid="right_column_be_part_of_community"
+          >
+            right_column_be_part_of_community
+          </li>
+        </ul>
+        <a
+          data-testid="right_column_learn_more"
+          href="right_column_learn_more_link"
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          right_column_learn_more
+          <img
+            alt=""
+            data-testid="next-image"
+            height="16"
+            quality="85"
+            src="/svg/external-link.svg"
+            width="16"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Landing renders correctly without referrer 1`] = `
+<DocumentFragment>
+  <div
+    class=MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4 css-XXXXX-MuiGrid-root
+  >
+    <div
+      class=MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8 css-XXXXX-MuiGrid-root
+    >
+      <div
+        data-testid="mock-home-content"
+      />
+    </div>
+    <div
+      class=MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4 aside-wrapper css-XXXXX-MuiGrid-root
+      data-testid="starting_business_just_become_easier_section"
+    >
+      <div
+        class="tile aside"
+      >
+        <div
+          class="banner"
+        >
+          <div
+            class="overlay"
+            data-testid="home_page_overlay"
+          />
+          <div
+            class="content"
+          >
+            <div
+              class="title"
+              data-testid="right_column_starting_your_business_just_got_easier"
+            >
+              right_column_starting_your_business_just_got_easier
+            </div>
+          </div>
+        </div>
+        <div
+          class="title"
+          data-testid="right_column_your_business_your_way"
+        >
+          right_column_your_business_your_way
+        </div>
+        <p
+          data-testid="right_column_unicity_help_become_leader"
+        >
+          right_column_unicity_help_become_leader
+        </p>
+        <ul>
+          <li
+            data-testid="right_column_wholesale_product_pricing"
+          >
+            right_column_wholesale_product_pricing
+          </li>
+          <li
+            data-testid="right_column_earn_commissions_product_sales"
+          >
+            right_column_earn_commissions_product_sales
+          </li>
+          <li
+            data-testid="right_column_build_your_business_your_way"
+          >
+            right_column_build_your_business_your_way
+          </li>
+          <li
+            data-testid="right_column_growth_incentives"
+          >
+            right_column_growth_incentives
+          </li>
+          <li
+            data-testid="right_column_training_education"
+          >
+            right_column_training_education
+          </li>
+          <li
+            data-testid="right_column_business_building_tools"
+          >
+            right_column_business_building_tools
+          </li>
+          <li
+            data-testid="right_column_networking_opportunities"
+          >
+            right_column_networking_opportunities
+          </li>
+          <li
+            data-testid="right_column_be_part_of_community"
+          >
+            right_column_be_part_of_community
+          </li>
+        </ul>
+        <a
+          data-testid="right_column_learn_more"
+          href="right_column_learn_more_link"
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          right_column_learn_more
+          <img
+            alt=""
+            data-testid="next-image"
+            height="16"
+            quality="85"
+            src="/svg/external-link.svg"
+            width="16"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

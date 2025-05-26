@@ -1,0 +1,6 @@
+{
+    "verbose": true,
+    "ignore": ["node_modules", "src/build"],
+    "watch": ["server/**/*", "shared/**/*"],
+    "ext": "js json"
+}

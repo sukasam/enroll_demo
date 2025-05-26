@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReferralBar matches snapshot when enroller name is available 1`] = `
+<div>
+  <div>
+    <div
+      class="css-0"
+    >
+      <div
+        class="ref-bar-main"
+      >
+        <span
+          class="ref-success"
+        >
+          <span
+            data-testid="referral_bar_text"
+          >
+            <span>
+              create_account_referred_by
+            </span>
+          </span>
+           
+          <strong
+            data-testid="referral_bar_enroller_name"
+          >
+            Jane Smith
+          </strong>
+           
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ReferralBar matches snapshot when no enroller name is available 1`] = `
+<div>
+  <div>
+    <div
+      class="css-0"
+    >
+      <div
+        class="ref-bar-main"
+      >
+        <span
+          class="ref-success"
+        >
+          <div
+            data-testid="spinner"
+          />
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -397,4 +397,6 @@ const AppWrapperWithLD = launchDarklyClientSideID
       })(AppWrapper as unknown as ComponentType)
     : AppWrapper;
 
+const test = (): JSX.Element => <div>Test</div>;
+
 export default AppWrapperWithLD;

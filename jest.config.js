@@ -35,5 +35,13 @@ module.exports = {
         "!src/**/enums*"
     ],
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-    maxWorkers: "50%"
+    maxWorkers: "50%",
+    coverageThreshold: {
+        global: {
+            branches: 80,
+            functions: 80,
+            lines: 80,
+            statements: 80
+        }
+    }
 };

@@ -6,7 +6,8 @@ const marketExceptions: MarketExceptions = {
     ...euConfig.marketExceptions,
     paymentOptions: {
         ...euConfig.marketExceptions.paymentOptions,
-        hasPayPal: false
+        hasPayPal: false,
+        hasKlarna: true
     },
     notificationType: optInNotificationTypes.EMAIL,
     zipLength: 5,

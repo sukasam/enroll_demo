@@ -99,11 +99,11 @@ export interface WillCallAddress {
 }
 
 export type PaymentOptions = {
-    hasPayPal: boolean;
-    hasCash: boolean;
-    hasBankWire: boolean;
-    hasCreditCard: boolean;
-    hasSavedCreditCard: boolean;
+    hasPayPal?: boolean;
+    hasCash?: boolean;
+    hasBankWire?: boolean;
+    hasCreditCard?: boolean;
+    hasSavedCreditCard?: boolean;
     hasKlarna?: boolean;
 };
 
@@ -129,7 +129,7 @@ export type MarketExceptions = {
     willCallAddresses?: WillCallAddress[];
     thankYouImage?: string;
     hideUnicityPhone?: boolean;
-    paymentOptions: PaymentOptions;
+    paymentOptions?: PaymentOptions;
     showStatesField?: boolean;
     useWorldPay?: boolean;
     directWorldPay?: boolean;
@@ -146,6 +146,8 @@ export type MarketExceptions = {
     hiddenEnrollerId?: boolean;
     hiddenPersonalData?: boolean;
     useCookie?: boolean;
+    formCreateAccount?: string[];
+    formUpdateAccount?: string[];
 };
 
 type BaseCountryConfig = {

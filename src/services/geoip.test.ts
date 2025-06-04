@@ -26,7 +26,7 @@ describe("geoLookup", () => {
         ({
             headers,
             cookies: {}
-        } as NextIncomingMessage & { cookies: NextApiRequestCookies });
+        }) as NextIncomingMessage & { cookies: NextApiRequestCookies };
 
     beforeEach(() => {
         jest.clearAllMocks();

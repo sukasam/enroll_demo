@@ -3,6 +3,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useTranslate } from "Components/shared/Translate";
+import { useOrder } from "Contexts/OrderContext";
 import { useUser } from "Contexts/UserContext";
 import useSectionComplete from "Hooks/useSectionComplete";
 import { useEffect } from "react";
@@ -30,16 +31,25 @@ function RegisterAccordion({ sections }: RegisterAccordionProps): JSX.Element {
     const t = useTranslate();
     const { isChangeHidden } = useSectionComplete();
     const theme = useTheme();
+    const { orderResult } = useOrder();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
     const isActiveSection = (sectionId: number): boolean =>
         activeAccordionSection === sectionId;
 
     useEffect(() => {
+        if (orderResult?.klarnaRedirectUrl) {
+            setActiveAccordionSection(5);
+        }
         if (activeAccordionSection === null) {
             setActiveAccordionSection(isLoggedIn ? 2 : 1);
         }
-    }, [activeAccordionSection, isLoggedIn, setActiveAccordionSection]);
+    }, [
+        activeAccordionSection,
+        isLoggedIn,
+        setActiveAccordionSection,
+        orderResult?.klarnaRedirectUrl
+    ]);
 
     const trackSectionUpdate = (section: SectionProps): void => {
         const getSectionName = (title: string): string =>

@@ -9,6 +9,7 @@ import mixpanelService from "Services/mixpanel/initializeMixPanel";
 import MixpanelEvent from "Services/mixpanel/mixpanelEvent";
 import formatHref from "Services/utils/formatHref";
 import { getFullName } from "Services/utils/fullName";
+import { getAuthToken } from "utils/authUtils";
 
 // const authCookieName = "_unicityToken_v5";
 const authCookieName = "_unicityToken_v5_enroll";
@@ -118,11 +119,14 @@ export default function useLoginHooks(): useLoginHooksType {
             enr_customer_type: customerType
         });
 
-        mixpanelService.trackEvent(MixpanelEvent.SIGN_IN_COMPLETED, {
-            event_location: "login",
-            already_a_distributor:
-                userResponse?.type?.toLowerCase() === "associate"
-        });
+        const token = getAuthToken();
+        if (!token) {
+            mixpanelService.trackEvent(MixpanelEvent.SIGN_IN_COMPLETED, {
+                event_location: "login",
+                already_a_distributor:
+                    userResponse?.type?.toLowerCase() === "associate"
+            });
+        }
     };
 
     const setLoggedInData = async ({
@@ -205,17 +209,17 @@ export default function useLoginHooks(): useLoginHooksType {
         setEnrollerId(userResponse.enroller.id);
         setUserData({
             firstName:
-                country === "JP"
+                userResponse.market === "JP"
                     ? userResponse.humanName["fullName@ja"]
                     : userResponse.humanName.firstName,
             lastName:
-                country === "JP"
+                userResponse.market === "JP"
                     ? `${userResponse.humanName.lastName} ${userResponse.humanName.firstName}`
                     : userResponse.humanName.lastName,
             phoneNumber: userResponse.mobilePhone,
             email: userResponse.email,
             fullName:
-                country === "JP"
+                userResponse.market === "JP"
                     ? `${userResponse.humanName.lastName} ${userResponse.humanName.firstName}`
                     : `${userResponse.humanName.firstName} ${userResponse.humanName.lastName}`,
             unicityId: userResponse.id.unicity

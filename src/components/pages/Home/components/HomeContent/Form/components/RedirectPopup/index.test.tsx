@@ -60,6 +60,12 @@ jest.mock("Constants/countryConfig", () => ({
     getCountryConfig: jest.fn(() => ({ name: "Test Country" }))
 }));
 
+jest.mock("utils/cacheManager", () => ({
+    CacheManager: {
+        clearAllCache: jest.fn().mockResolvedValue(undefined)
+    }
+}));
+
 describe("RedirectPopup", () => {
     const mockProps = {
         path: "/test-path",
@@ -70,7 +76,10 @@ describe("RedirectPopup", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         delete (window as { location?: Location }).location;
-        (window as { location: Partial<Location> }).location = { href: "" };
+        (window as { location: Partial<Location> }).location = {
+            href: "",
+            reload: jest.fn()
+        };
     });
 
     it("renders the component with correct content", () => {
@@ -95,23 +104,31 @@ describe("RedirectPopup", () => {
         expect(window.location.href).toBe("/test-path");
     });
 
-    it("calls onClose when clicking the cancel button", () => {
+    it("calls onClose when clicking the cancel button", async () => {
         render(<RedirectPopup {...mockProps} />);
         fireEvent.click(screen.getByText("home_modal_cancel"));
+        // Wait for async operations to complete
+        await Promise.resolve();
         expect(mockProps.onClose).toHaveBeenCalledTimes(1);
     });
 
-    it("calls onClose when pressing Enter or Space on the cancel button", () => {
+    it("calls onClose when pressing Enter or Space on the cancel button", async () => {
         render(<RedirectPopup {...mockProps} />);
         const cancelButton = screen.getByText("home_modal_cancel");
 
         fireEvent.keyDown(cancelButton, { key: "Enter" });
+        // Wait for async operations to complete
+        await Promise.resolve();
         expect(mockProps.onClose).toHaveBeenCalledTimes(1);
 
         fireEvent.keyDown(cancelButton, { key: "Space" });
+        // Wait for async operations to complete
+        await Promise.resolve();
         expect(mockProps.onClose).toHaveBeenCalledTimes(2);
 
         fireEvent.keyDown(cancelButton, { key: "Escape" });
+        // Wait for async operations to complete
+        await Promise.resolve();
         expect(mockProps.onClose).toHaveBeenCalledTimes(2);
     });
 });

@@ -2,14 +2,14 @@
 import { datadogRum } from "@datadog/browser-rum";
 import { DevTool } from "@hookform/devtools";
 import { Checkbox, FormControlLabel } from "@mui/material";
+import mapFieldToComponent from "Components/shared/Form/components/MapFieldToComponent";
 import PasswordRequirements from "Components/shared/Form/components/PasswordRequirements";
-import PhoneNumberField from "Components/shared/Form/components/PhoneNumberField";
-import TextField from "Components/shared/Form/components/TextField";
 import ReCaptcha from "Components/shared/ReCaptcha";
 import showToast from "Components/shared/ShowToaster";
-import T, { useTranslate } from "Components/shared/Translate";
+import { useTranslate } from "Components/shared/Translate";
 import { useCountryConfig } from "Constants/countryConfig";
-import { Alpha2, optInNotificationTypes } from "Constants/countryConfig/enums";
+import { optInNotificationTypes } from "Constants/countryConfig/enums";
+import commonConfig from "Constants/countryConfig/commonConfig";
 import { useUser } from "Contexts/UserContext";
 import { useTranslations } from "Contexts/translation";
 import createCustomer, { CustomerDataType } from "Hydra/createCustomer";
@@ -27,6 +27,8 @@ import validationRules from "./validationRules";
 type FormValues = {
     firstName: string;
     lastName: string;
+    fullName: string;
+    fullNameEn: string;
     phoneNumber: string;
     email: string;
     password: string;
@@ -70,12 +72,13 @@ function CreateAccountForm({
     setIsLoading,
     isLoading
 }: CreateAccountFormProps): JSX.Element {
-    const [eventFired, setEventFired] = useState(false);
     const router = useRouter();
     const form = useForm<FormValues>({
         defaultValues: {
             firstName: "",
             lastName: "",
+            fullName: "",
+            fullNameEn: "",
             phoneNumber: "",
             email: "",
             password: "",
@@ -152,9 +155,9 @@ function CreateAccountForm({
             humanName:
                 country === "JP"
                     ? {
-                          firstName: formatFullName(data.lastName),
+                          firstName: formatFullName(data.fullNameEn),
                           lastName: "",
-                          "firstName@ja": data.firstName
+                          "firstName@ja": data.fullName
                       }
                     : { firstName: data.firstName, lastName: data.lastName },
             password: { value: data.password },
@@ -312,6 +315,8 @@ function CreateAccountForm({
         const fieldMapping: Record<string, string> = {
             firstName: "first_name",
             lastName: "last_name",
+            fullName: "full_name",
+            fullNameEn: "full_name_en",
             phoneNumber: "phone_number",
             email: "email",
             password: "password",
@@ -371,6 +376,34 @@ function CreateAccountForm({
         router.push("/login");
     };
 
+    // Helper: group fields into rows of 2 columns, left-aligned if odd
+    const formFields = Array.isArray(marketExceptions?.formCreateAccount)
+        ? marketExceptions.formCreateAccount
+        : commonConfig?.marketExceptions?.formCreateAccount || [
+              "firstName",
+              "lastName",
+              "phoneNumber",
+              "email",
+              "password"
+          ];
+
+    // Split fields into rows of 2
+    const fieldRows: string[][] = [];
+    for (let i = 0; i < formFields.length; i += 2) {
+        fieldRows.push(formFields.slice(i, i + 2));
+    }
+
+    const renderField = (field: string): JSX.Element | null =>
+        mapFieldToComponent({
+            field,
+            validationRules,
+            translate,
+            country,
+            errors,
+            control,
+            type: "create"
+        });
+
     return (
         <div css={styles}>
             <div className="formContainer">
@@ -381,73 +414,35 @@ function CreateAccountForm({
                         noValidate
                         data-testid="create-account-form"
                     >
-                        <div className="formRow firstRow phoneNumberRow">
-                            <TextField
-                                label={translate("create_account_first_name")}
-                                name="firstName"
-                                rules={{
-                                    ...validationRules.firstName,
-                                    validate: (value: string) =>
-                                        validationRules.firstName.validate(
-                                            value,
-                                            country
-                                        )
-                                }}
-                                type="text"
-                                data-testid="create_account_first_name"
-                            />
-                            <TextField
-                                label={translate("create_account_last_name")}
-                                name="lastName"
-                                rules={{
-                                    ...validationRules.lastName,
-                                    validate: (value: string) =>
-                                        validationRules.lastName.validate(
-                                            value,
-                                            country
-                                        )
-                                }}
-                                type="text"
-                                data-testid="create_account_last_name"
-                            />
-                        </div>
-                        <div className="formRow phoneNumberRow">
-                            <PhoneNumberField
-                                className="phoneNumberField"
-                                label={translate("create_account_phone_number")}
-                                name="phoneNumber"
-                                rules={validationRules.phoneNumber}
-                                defaultCountry={country as Alpha2}
-                                error={translate(errors.phoneNumber?.message)}
-                                control={control}
-                                data-testid="create_account_phone_number"
-                            />
-                            <TextField
-                                label={<T>create_account_email_address</T>}
-                                name="email"
-                                rules={validationRules.email}
-                                type="text"
-                                data-testid="create_account_email_address"
-                            />
-                        </div>
-
-                        <div className="formRow">
-                            <div className="formField halfWidth">
-                                <TextField
-                                    label={translate("create_account_password")}
-                                    name="password"
-                                    rules={validationRules.password}
-                                    type="password"
-                                    data-testid="create_account_password"
-                                    className="passwordField"
-                                />
-                            </div>
-                            <PasswordRequirements
-                                password={password}
-                                touchedFields={touchedFields}
-                                data-testid="password_requirements_list"
-                            />
-                        </div>
+                        {/* Render fields in rows of 2 columns, left-aligned if odd. If password is in the row, render PasswordRequirements in the right column. */}
+                        {fieldRows.map(row => {
+                            const hasPassword = row.includes("password");
+                            let rightCol: JSX.Element | null = null;
+                            if (hasPassword) {
+                                rightCol = (
+                                    <PasswordRequirements
+                                        password={password}
+                                        touchedFields={touchedFields}
+                                        data-testid="password_requirements_list"
+                                    />
+                                );
+                            } else if (row[1]) {
+                                rightCol = renderField(row[1]);
+                            }
+                            return (
+                                <div
+                                    className="formRow"
+                                    key={`form-row-${row.join("-")}`}
+                                >
+                                    <div className="formField halfWidth">
+                                        {renderField(row[0])}
+                                    </div>
+                                    <div className="formField halfWidth">
+                                        {rightCol}
+                                    </div>
+                                </div>
+                            );
+                        })}
                         <div className="formField checkboxField fullWidth">
                             <FormControlLabel
                                 control={
@@ -477,7 +472,11 @@ function CreateAccountForm({
                                                             alpha2:
                                                                 country || "us"
                                                         }
-                                                    )
+                                                    ),
+                                                    member_privacy_url:
+                                                        translate(
+                                                            "footer_privacy_policy_link"
+                                                        )
                                                 }
                                             ).replace(
                                                 /<a\s/g,

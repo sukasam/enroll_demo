@@ -21,17 +21,20 @@ function VariantPicker(props: VariantPickerProps): JSX.Element {
 
     const tabImages = useMemo(
         () =>
-            ufgVariants.reduce((acc, variant: Variant) => {
-                if (variant.options.unimate_flavour) {
-                    acc[variant.options.unimate_flavour.title] =
-                        variant.tabImage.unimate;
-                }
-                if (variant.options.balance_pack) {
-                    acc[variant.options.balance_pack.title] =
-                        variant.tabImage.balance || "";
-                }
-                return acc;
-            }, {} as Record<string, string>),
+            ufgVariants.reduce(
+                (acc, variant: Variant) => {
+                    if (variant.options.unimate_flavour) {
+                        acc[variant.options.unimate_flavour.title] =
+                            variant.tabImage.unimate;
+                    }
+                    if (variant.options.balance_pack) {
+                        acc[variant.options.balance_pack.title] =
+                            variant.tabImage.balance || "";
+                    }
+                    return acc;
+                },
+                {} as Record<string, string>
+            ),
         [ufgVariants]
     );
 

@@ -121,6 +121,8 @@ describe("CreateAccountForm", () => {
                     error_name: [
                         "first_name",
                         "last_name",
+                        "full_name",
+                        "full_name_en",
                         "phone_number",
                         "email",
                         "password",

@@ -78,7 +78,7 @@ const paymentOptionsConfig: PaymentOptions = {
     hasBankWire: true,
     hasCreditCard: true,
     hasSavedCreditCard: false,
-    hasKlarna: true
+    hasKlarna: false
 };
 
 const marketExceptions: MarketExceptions = {

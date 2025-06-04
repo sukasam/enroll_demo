@@ -52,11 +52,9 @@ export default ({ color, size, width }) => {
         buttonStyles.push(addSizeMap(size));
     }
     if (width) {
-        buttonStyles.push(
-            css`
-                width: ${width};
-            `
-        );
+        buttonStyles.push(css`
+            width: ${width};
+        `);
     }
     return buttonStyles;
 };

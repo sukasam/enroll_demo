@@ -22,6 +22,11 @@ interface TextFieldProps<TFieldValues extends FieldValues>
     capitalize?: boolean;
 }
 
+interface ValidationError {
+    type: string;
+    message?: string;
+}
+
 function TextField<TFieldValues extends FieldValues>({
     className,
     label,
@@ -39,10 +44,7 @@ function TextField<TFieldValues extends FieldValues>({
     const translate = useTranslate();
     const togglePasswordVisibility = (): void => setShowPassword(!showPassword);
 
-    const getErrorMessage = (
-        error: Record<string, any>,
-        name: string
-    ): JSX.Element => {
+    const getErrorMessage = (error: ValidationError): JSX.Element => {
         const errorMessageName = translate(error.message);
         const errorMessage = translate("error_is_required");
 
@@ -54,42 +56,42 @@ function TextField<TFieldValues extends FieldValues>({
             );
         }
 
-        const handleErrorLinkClick = (): void => {
-            mixpanelService.trackEvent(
+        const handleErrorLinkClick = async (): Promise<void> => {
+            await mixpanelService.trackEvent(
                 MixpanelEvent.REGISTRATION_ALREADY_HAVE_ACCOUNT_CLICKED,
                 {
                     event_location: "email_validation_error"
                 }
             );
-        };
-
-        const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
-            const target = e.target as HTMLElement;
-            if (target.tagName === "A") {
-                handleErrorLinkClick();
-            }
+            window.location.href = "/login";
         };
 
         const errorText = translate(error.message, { url: "/login" });
 
+        const handleErrorClick = async (
+            e:
+                | React.MouseEvent<HTMLDivElement>
+                | React.KeyboardEvent<HTMLDivElement>
+        ): Promise<void> => {
+            const target = e.target as HTMLElement;
+            if (target.tagName === "A") {
+                e.preventDefault();
+                await handleErrorLinkClick();
+            }
+        };
+
         return (
-            <button
-                type="button"
+            <div
                 className="error active"
+                onClick={handleErrorClick}
+                onKeyDown={handleErrorClick}
+                role="button"
+                tabIndex={0}
                 aria-label={errorText}
-                onClick={handleClick}
-                style={{
-                    cursor: "pointer",
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    textAlign: "left",
-                    width: "100%"
-                }}
                 dangerouslySetInnerHTML={{
                     __html: errorText.replace(
                         /<a\s/g,
-                        '<a style="color: inherit;" role="link" tabindex="0" onclick="event.preventDefault(); window.location.href=\'/login\'"'
+                        '<a style="color: inherit;" role="link" tabindex="0"'
                     )
                 }}
             />
@@ -160,7 +162,12 @@ function TextField<TFieldValues extends FieldValues>({
                             </IconButton>
                         )}
                     </div>
-                    {error && getErrorMessage(error, name)}
+                    {/* Always render error message area for consistent height */}
+                    {error ? (
+                        getErrorMessage(error as ValidationError)
+                    ) : (
+                        <p className="error">{"\u00A0"}</p>
+                    )}
                 </div>
             )}
         />

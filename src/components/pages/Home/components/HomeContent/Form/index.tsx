@@ -63,8 +63,10 @@ function Form({ referrer, refId }: Props): React.ReactElement {
         enrollerId,
         sponsorFullName,
         enrollerFullName,
+        enrollerAllFullName,
         isUserContextLoading
     } = useUser();
+    const [displayEnrollerName, setDisplayEnrollerName] = useState<string>("");
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -203,6 +205,18 @@ function Form({ referrer, refId }: Props): React.ReactElement {
             setSponsorFullName(getFullName(referrer?.humanName));
         }
     }, [isUserContextLoading, refId, referrer]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setDisplayEnrollerName(enrollerFullName || "");
+            if (language === "ja") {
+                const fullName =
+                    enrollerAllFullName[`fullName@${language}`] ||
+                    enrollerFullName;
+                setDisplayEnrollerName(fullName);
+            }
+        }, 800);
+    }, [enrollerAllFullName, enrollerFullName, language]);
 
     useEffect(() => {
         setCountry(formValues.country);
@@ -344,7 +358,7 @@ function Form({ referrer, refId }: Props): React.ReactElement {
                             className="enrollerName"
                             data-testid="enroller_name"
                         >
-                            {enrollerFullName}
+                            {displayEnrollerName}
                         </div>
                     </div>
                     {!hiddenEnrollerId && (

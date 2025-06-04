@@ -25,7 +25,7 @@ const config: CountryConfig = {
     alpha2: Alpha2.KW,
     isSupported: false,
     name: "Kuwait",
-    redirect: undefined,
+    redirect: "https://ushop-link.unicity.com/mena/enroll",
     languages: [
         {
             code: "ar",

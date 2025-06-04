@@ -106,7 +106,13 @@ const childSrc = [
     "*.cookieyes.com"
 ].join(" ");
 
-const frameSrc = ["'self'", "*"].join(" ");
+const frameSrc = [
+    "'self'",
+    "https://www.google.com",
+    "https://www.gstatic.com",
+    "https://recaptcha.google.com",
+    "https://www.recaptcha.net"
+].join(" ");
 
 const styleSrc = [
     "'self'",
@@ -206,10 +212,10 @@ const nextConfig = {
             }
         ];
     },
-    webpack(config) {
+    webpack(config, { dev }) {
         config.optimization = {
             ...config.optimization,
-            minimize: true
+            minimize: !dev // Only minimize in production
         };
 
         // Add SVG support

@@ -37,6 +37,7 @@ export default function SubmitButton({
     const {
         selectedShippingMethod,
         selectedPaymentMethod,
+        orderResult,
         setOrderResult,
         isCreditCardPaymentValid,
         billingAddress,
@@ -44,7 +45,6 @@ export default function SubmitButton({
     } = useOrder();
 
     const translate = useTranslate();
-
     const orderData = useUserDataMapper();
     const paymentMethod = useMemo(
         () => orderData?.payment?.method,
@@ -52,6 +52,7 @@ export default function SubmitButton({
     );
     const [showPaymentLoader, setShowPaymentLoader] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isKlarnaRedirect, setIsKlarnaRedirect] = useState(false);
 
     // Add mounted ref to track component lifecycle
     const isMounted = useRef(true);
@@ -63,6 +64,13 @@ export default function SubmitButton({
         },
         []
     );
+
+    useEffect(() => {
+        if (sessionStorage.getItem("klarnaRedirect")) {
+            setIsKlarnaRedirect(true);
+            sessionStorage.removeItem("klarnaRedirect");
+        }
+    }, []);
 
     const submitDisabled = useMemo(
         () =>
@@ -182,6 +190,7 @@ export default function SubmitButton({
 
             if (processedResults.klarnaRedirectUrl) {
                 setOrderResult({ ...processedResults, externalRedirect: true });
+                sessionStorage.setItem("klarnaRedirect", "1");
                 window.location.href = processedResults.klarnaRedirectUrl;
                 return processedResults;
             }
@@ -212,6 +221,9 @@ export default function SubmitButton({
             if (isSubmitting) {
                 return null;
             }
+            setIsKlarnaRedirect(false);
+            sessionStorage.removeItem("klarnaRedirect");
+
             setIsSubmitting(true);
             handleInitialSetup(event);
 
@@ -252,6 +264,12 @@ export default function SubmitButton({
             handleInitialSetup
         ]
     );
+
+    useEffect(() => {
+        if (orderResult?.klarnaRedirectUrl && isKlarnaRedirect) {
+            showToast(translate("payment_error_message"), "error");
+        }
+    }, [orderResult?.klarnaRedirectUrl, isKlarnaRedirect, translate]);
 
     return (
         <div css={styles}>

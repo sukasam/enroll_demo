@@ -1,20 +1,44 @@
 import reCaptchaKey from "Constants/reCaptcha";
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import {
+    forwardRef,
+    useEffect,
+    useImperativeHandle,
+    useRef,
+    useState
+} from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const ReCaptcha = forwardRef(({ siteKey = reCaptchaKey }, ref) => {
     const recaptchaRef = useRef();
+    const [isMounted, setIsMounted] = useState(false);
+    const [error, setError] = useState(null);
 
-    const executeInvisibleReCaptcha = () => {
-        if (recaptchaRef.current) {
-            return recaptchaRef.current.executeAsync();
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    const executeInvisibleReCaptcha = async () => {
+        try {
+            if (recaptchaRef.current) {
+                return await recaptchaRef.current.executeAsync();
+            }
+            return null;
+        } catch (err) {
+            console.error("reCAPTCHA execution failed:", err);
+            setError(err);
+            return null;
         }
-        return null;
     };
 
     const resetReCaptcha = () => {
-        if (recaptchaRef.current) {
-            recaptchaRef.current.reset();
+        try {
+            if (recaptchaRef.current) {
+                recaptchaRef.current.reset();
+                setError(null);
+            }
+        } catch (err) {
+            console.error("reCAPTCHA reset failed:", err);
+            setError(err);
         }
     };
 
@@ -23,11 +47,17 @@ const ReCaptcha = forwardRef(({ siteKey = reCaptchaKey }, ref) => {
         reset: resetReCaptcha
     }));
 
-    const handleError = () => {
+    const handleError = err => {
+        console.error("reCAPTCHA error:", err);
+        setError(err);
         setTimeout(() => {
             executeInvisibleReCaptcha();
         }, 20000);
     };
+
+    if (!isMounted) {
+        return null;
+    }
 
     return (
         <div>
@@ -39,6 +69,11 @@ const ReCaptcha = forwardRef(({ siteKey = reCaptchaKey }, ref) => {
                 onExpired={handleError}
                 size="invisible"
             />
+            {error && (
+                <div className="recaptcha-error" data-testid="recaptcha-error">
+                    {error.message || "reCAPTCHA error occurred"}
+                </div>
+            )}
         </div>
     );
 });

@@ -3,6 +3,7 @@ import { getCountryConfig } from "Constants/countryConfig";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import getMe from "Hydra/getMe";
 import mixpanelService from "Services/mixpanel/initializeMixPanel";
+import { getAuthToken } from "../../utils/authUtils";
 import useLoginHooks from "./LoginHooks";
 
 // Mock the imported modules
@@ -11,6 +12,7 @@ jest.mock("Hydra/getMe");
 jest.mock("Services/mixpanel/initializeMixPanel");
 jest.mock("Constants/countryConfig");
 jest.mock("Contexts/translation");
+jest.mock("../../utils/authUtils");
 
 describe("useLoginHooks", () => {
     beforeEach(() => {
@@ -68,6 +70,7 @@ describe("useLoginHooks", () => {
 
         (getMe as jest.Mock).mockResolvedValue(mockUserResponse);
         (getCountryConfig as jest.Mock).mockReturnValue({ someConfig: true });
+        (getAuthToken as jest.Mock).mockReturnValue(null);
 
         const { result } = renderHook(() => useLoginHooks());
 

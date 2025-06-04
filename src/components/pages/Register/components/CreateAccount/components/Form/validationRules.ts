@@ -80,11 +80,11 @@ const validatePassword = (value: string): string | boolean => {
 };
 
 const validationRules = {
-    firstName: {
-        required: "create_account_first_name",
+    fullName: {
+        required: "create_account_full_name",
         validate: (value: string, country?: string): string | boolean => {
             if (value.trim() === "") {
-                return "create_account_first_name";
+                return "create_account_full_name";
             }
 
             // Add Japanese language validation for JP country
@@ -100,11 +100,11 @@ const validationRules = {
             return true;
         }
     },
-    lastName: {
-        required: "create_account_last_name",
+    fullNameEn: {
+        required: "create_account_full_name_en",
         validate: (value: string, country?: string): string | boolean => {
             if (value.trim() === "") {
-                return "create_account_last_name";
+                return "create_account_full_name_en";
             }
 
             // For JP country, validate English characters and name format
@@ -137,6 +137,26 @@ const validationRules = {
                 ) {
                     return "error_full_name_format";
                 }
+            }
+
+            return true;
+        }
+    },
+    firstName: {
+        required: "create_account_first_name",
+        validate: (value: string): string | boolean => {
+            if (value.trim() === "") {
+                return "create_account_first_name";
+            }
+
+            return true;
+        }
+    },
+    lastName: {
+        required: "create_account_last_name",
+        validate: (value: string): string | boolean => {
+            if (value.trim() === "") {
+                return "create_account_last_name";
             }
 
             return true;

@@ -18,6 +18,7 @@ export default css`
 
     .label {
         padding: 5px 10px;
+        color: #153862;
     }
 
     .formTitle {
@@ -39,14 +40,13 @@ export default css`
         margin: 0 auto;
         border-radius: 8px;
         background-color: white;
-        gap: 10px;
     }
 
     .formRow,
     .checkboxField {
         display: flex;
         gap: 30px;
-        align-items: center;
+        // align-items: center;
     }
 
     .formRow.firstRow {
@@ -151,7 +151,7 @@ export default css`
         font-weight: 400;
         margin: 0;
         width: 100%;
-        min-height:20px;
+        min-height: 20px;
         margin-top: -10px;
         visibility:hidden;
     }
@@ -169,9 +169,9 @@ export default css`
 
     .passwordRequirements {
         font-size: 14px;
-        width: 48%;
+        width: 100%;
         font-weight: 400;
-        margin-left: 10px;
+        margin-left: 0;
     }
 
     .passwordRequirements ul {
@@ -248,5 +248,4 @@ export default css`
             gap: 0;
         }
     }
-       
 `;

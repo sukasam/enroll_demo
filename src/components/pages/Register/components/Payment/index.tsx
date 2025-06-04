@@ -21,7 +21,7 @@ function PaymentSection(): JSX.Element {
                         option.transactionMethod.charAt(0).toUpperCase() +
                         option.transactionMethod.slice(1)
                     }` as keyof PaymentOptions;
-                    return config?.marketExceptions?.paymentOptions[methodKey]
+                    return config?.marketExceptions?.paymentOptions?.[methodKey]
                         ? option
                         : null;
                 })

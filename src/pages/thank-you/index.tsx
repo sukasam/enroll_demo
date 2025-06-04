@@ -51,7 +51,7 @@ export default function Page(props: PageWrapperServerProps): JSX.Element {
             const hasOrderId = !!router.query.orderId;
             const noPurchase = router.query.noPurchase === "true";
 
-            // Don't redirect if we're still loading
+            // Don't do anything if we're still loading
             if (!router.isReady) {
                 return false;
             }
@@ -63,16 +63,18 @@ export default function Page(props: PageWrapperServerProps): JSX.Element {
                 return true;
             }
 
-            // Only redirect if we're sure we don't have access
+            // Only redirect if we're sure we don't have access and the router is ready
             if (router.isReady && !hasOrderId && !noPurchase && !orderResult) {
-                router.replace("/home");
+                // Use replace instead of push to prevent back button issues
+                router.replace("/home", undefined, { shallow: true });
                 return false;
             }
 
             return false;
         } catch (error) {
             console.error("Error in route validation:", error);
-            router.replace("/home");
+            // Use replace instead of push to prevent back button issues
+            router.replace("/home", undefined, { shallow: true });
             return false;
         }
     }, [orderResult, router]);

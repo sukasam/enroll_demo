@@ -29,7 +29,7 @@ export default css`
 
     .input,
     .select {
-        padding: 15px;
+        padding: 14px;
         font-size: 16px;
         width: 100%;
         border-radius: 5px;
@@ -54,20 +54,5 @@ export default css`
     }
     .error.active {
         visibility: visible;
-    }
-
-    .showPasswordButton {
-        position: absolute;
-        right: 0;
-        top: 46%;
-        transform: translateY(-50%);
-    }
-
-    .locked-icon {
-        position: absolute;
-        right: 0;
-        top: 48%;
-        transform: translateY(-50%);
-        pointer-events: none;
     }
 `;

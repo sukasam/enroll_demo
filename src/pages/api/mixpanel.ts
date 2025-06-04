@@ -38,8 +38,7 @@ export default async function handler(
 
         const $browser = uaParser(req.headers["user-agent"]).browser.name;
         const $os = uaParser(req.headers["user-agent"]).os.name;
-        // eslint-disable-next-line camelcase
-        const $browser_version = uaParser(req.headers["user-agent"]).browser
+        const browserVersion = uaParser(req.headers["user-agent"]).browser
             .version;
         const $device = uaParser(req.headers["user-agent"]).device.model;
 
@@ -47,7 +46,7 @@ export default async function handler(
             ...properties,
             $browser,
             $os,
-            $browser_version,
+            browserVersion,
             $device,
             ip: req.headers["cf-connecting-ip"]
         };

@@ -7,6 +7,7 @@ export type Customer = {
         lastName: string;
         fullName: string;
         "fullName@fr": string;
+        "fullName@ja"?: string;
     };
     preferredName?: {
         firstName: string;

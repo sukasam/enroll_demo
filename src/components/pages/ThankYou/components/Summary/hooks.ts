@@ -70,7 +70,7 @@ export function useOrderDetails(): OrderDetails {
                 ? getFullName(
                       orderResult.customer.coapplicant.details.humanName
                   )
-                : orderResult.customer?.businessEntity?.companyName ?? null,
+                : (orderResult.customer?.businessEntity?.companyName ?? null),
             sponsor: sponsorFullName,
             orderNumber: orderResult.id.unicity,
             receiptEmail: orderResult.shipToEmail

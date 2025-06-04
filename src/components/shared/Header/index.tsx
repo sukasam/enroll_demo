@@ -31,10 +31,10 @@ export default function Header(): JSX.Element {
             });
 
             // Clear all data and redirect to register page
-            window.location.href = "/reset?redirect=/login";
+            window.location.href = "/logout";
         } catch (error) {
             console.error("Logout error:", error);
-            window.location.href = "/reset?redirect=/login";
+            window.location.href = "/logout";
         }
     };
 

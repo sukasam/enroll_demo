@@ -3,6 +3,10 @@ import PhoneNumberField from "Components/shared/Form/components/PhoneNumberField
 import TextField from "Components/shared/Form/components/TextField";
 import { useTranslate } from "Components/shared/Translate";
 import { useUser } from "Contexts/UserContext";
+import { useCountryConfig } from "Constants/countryConfig";
+import { useTranslations } from "Contexts/translation";
+import commonConfig from "Constants/countryConfig/commonConfig";
+import mapFieldToComponent from "Components/shared/Form/components/MapFieldToComponent";
 
 import showToast from "Components/shared/ShowToaster";
 import updateCustomer from "Hydra/updateCustomer";
@@ -14,6 +18,8 @@ import validationRules from "./validationRules";
 interface FormValues {
     firstName: string;
     lastName: string;
+    fullName: string;
+    fullNameEn: string;
     phoneNumber: string;
     email: string;
 }
@@ -36,7 +42,9 @@ function UpdateAccountForm({
         goToNextSection
     } = useUser();
     const translate = useTranslate();
-
+    const { country } = useTranslations();
+    const countryConfig = useCountryConfig();
+    const { marketExceptions } = countryConfig || {};
     const formatPhoneNumber = (phoneNumber: string): string => {
         const cleanedNumber = phoneNumber.replace(/\D/g, "");
 
@@ -48,6 +56,8 @@ function UpdateAccountForm({
         defaultValues: {
             firstName: "",
             lastName: "",
+            fullName: "",
+            fullNameEn: "",
             phoneNumber: "",
             email: ""
         }
@@ -70,6 +80,8 @@ function UpdateAccountForm({
             setValue("email", userData?.email || "");
             setValue("firstName", userData?.firstName || "");
             setValue("lastName", userData?.lastName || "");
+            setValue("fullName", userData?.firstName || "");
+            setValue("fullNameEn", userData?.lastName || "");
         }
     }, [isLoggedIn, userData, setValue]);
 
@@ -121,6 +133,34 @@ function UpdateAccountForm({
     const onSubmit = (data: FormValues): void => {
         updateCustomerFromForm(data);
     };
+
+    // Helper: group fields into rows of 2 columns, left-aligned if odd
+    const formFields = Array.isArray(marketExceptions?.formUpdateAccount)
+        ? marketExceptions.formUpdateAccount
+        : commonConfig?.marketExceptions?.formUpdateAccount || [
+              "firstName",
+              "lastName",
+              "phoneNumber",
+              "email"
+          ];
+
+    // Split fields into rows of 2
+    const fieldRows: string[][] = [];
+    for (let i = 0; i < formFields.length; i += 2) {
+        fieldRows.push(formFields.slice(i, i + 2));
+    }
+
+    const renderField = (field: string): JSX.Element | null =>
+        mapFieldToComponent({
+            field,
+            validationRules,
+            translate,
+            country,
+            errors,
+            control,
+            disabled: true,
+            type: "update"
+        });
     return (
         <div css={styles}>
             <FormProvider {...form}>
@@ -129,43 +169,26 @@ function UpdateAccountForm({
                     onSubmit={handleSubmit(onSubmit)}
                     noValidate
                 >
-                    <div className="formRow">
-                        <TextField
-                            label={translate("create_account_first_name")}
-                            name="firstName"
-                            rules={validationRules.firstName}
-                            type="text"
-                            data-testid="create_account_first_name"
-                            disabled
-                        />
-                        <TextField
-                            label={translate("create_account_last_name")}
-                            name="lastName"
-                            rules={validationRules.lastName}
-                            type="text"
-                            data-testid="create_account_last_name"
-                            disabled
-                        />
-                    </div>
-                    <div className="formRow phoneNumberRow">
-                        <PhoneNumberField
-                            className="phoneNumberField"
-                            label={translate("create_account_phone_number")}
-                            name="phoneNumber"
-                            rules={validationRules.phoneNumber}
-                            error={errors.phoneNumber?.message}
-                            control={control}
-                            data-testid="create_account_phone_number"
-                        />
-                        <TextField
-                            label={translate("create_account_email_address")}
-                            name="email"
-                            rules={validationRules.email}
-                            type="text"
-                            data-testid="create_account_email_address"
-                            disabled
-                        />
-                    </div>
+                    {fieldRows.map(row => {
+                        let rightCol: JSX.Element | null = null;
+                        if (row[1]) {
+                            rightCol = renderField(row[1]);
+                        }
+                        return (
+                            <div
+                                className="formRow"
+                                key={`form-row-${row.join("-")}`}
+                            >
+                                <div className="formField halfWidth">
+                                    {renderField(row[0])}
+                                </div>
+                                <div className="formField halfWidth">
+                                    {rightCol}
+                                </div>
+                            </div>
+                        );
+                    })}
+
                     <button
                         type="submit"
                         className="continue-button"

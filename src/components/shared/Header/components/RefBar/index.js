@@ -8,8 +8,13 @@ import styles from "./styles";
 
 export default function ReferralBar() {
     const [fullName, setFullName] = useState("");
+    const [isMounted, setIsMounted] = useState(false);
     const { enrollerFullName, enrollerAllFullName } = useUser();
     const language = getCookie("language");
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     useEffect(() => {
         if (enrollerAllFullName && typeof enrollerAllFullName === "object") {
@@ -21,28 +26,30 @@ export default function ReferralBar() {
         }
     }, [language, enrollerFullName, enrollerAllFullName]);
 
+    if (!isMounted) {
+        return null;
+    }
+
     return (
-        <div suppressHydrationWarning>
-            {typeof window !== "undefined" ? (
-                <div css={styles}>
-                    <div className="ref-bar-main" suppressHydrationWarning>
-                        <span className="ref-success">
-                            {fullName ? (
-                                <>
-                                    <span data-testid="referral_bar_text">
-                                        <T>create_account_referred_by</T>
-                                    </span>{" "}
-                                    <strong data-testid="referral_bar_enroller_name">
-                                        {fullName}
-                                    </strong>{" "}
-                                </>
-                            ) : (
-                                <Spinner height="24px" />
-                            )}
-                        </span>
-                    </div>
+        <div>
+            <div css={styles}>
+                <div className="ref-bar-main">
+                    <span className="ref-success">
+                        {fullName ? (
+                            <>
+                                <span data-testid="referral_bar_text">
+                                    <T>create_account_referred_by</T>
+                                </span>{" "}
+                                <strong data-testid="referral_bar_enroller_name">
+                                    {fullName}
+                                </strong>{" "}
+                            </>
+                        ) : (
+                            <Spinner height="24px" />
+                        )}
+                    </span>
                 </div>
-            ) : null}
+            </div>
         </div>
     );
 }

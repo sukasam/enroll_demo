@@ -108,10 +108,13 @@ export async function getServerSideProps(
             country,
             language
         });
-        translations = Object.entries(response).reduce((acc, [key, value]) => {
-            acc[key] = String(value);
-            return acc;
-        }, {} as Record<string, string>);
+        translations = Object.entries(response).reduce(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {} as Record<string, string>
+        );
         serverStore.setTranslation(local, translations);
     } catch (e) {
         console.log(e);

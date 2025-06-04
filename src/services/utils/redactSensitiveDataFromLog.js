@@ -15,7 +15,13 @@ export default function redactSensitiveDataFromLog(data) {
     const isCookieEnabled = getCookie("isCookieEnabled") === "true";
 
     if (isCookieEnabled) {
-        keysToRedact.push("firstName", "lastName", "email");
+        keysToRedact.push(
+            "firstName",
+            "lastName",
+            "email",
+            "shipToEmail",
+            "payer"
+        );
     }
 
     try {

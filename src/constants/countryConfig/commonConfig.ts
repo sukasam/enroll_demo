@@ -96,7 +96,15 @@ const marketExceptions: MarketExceptions = {
     usePayPal3ds: false,
     notificationType: optInNotificationTypes.SMS,
     hiddenDecimal: false,
-    updateMainAddress: true
+    updateMainAddress: true,
+    formCreateAccount: [
+        "firstName",
+        "lastName",
+        "phoneNumber",
+        "email",
+        "password"
+    ],
+    formUpdateAccount: ["firstName", "lastName", "phoneNumber", "email"]
 };
 
 const commonConfig: TemplateSupportedCountryConfig = {

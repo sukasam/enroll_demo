@@ -83,7 +83,7 @@ const paymentOptionsConfig: PaymentOptions = {
 };
 
 const marketExceptions: MarketExceptions = {
-    zipLength: [5, 9],
+    zipLength: [5, 10],
     taxIdPattern: /^[0-9]{3}[0-9]{2}[0-9]{4}$/,
     taxInclusiveBackEnd: false,
     taxInclusiveFrontEnd: false,

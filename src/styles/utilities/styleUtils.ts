@@ -4,10 +4,9 @@ const applyConditionalStyles = (
     baseStyle: SerializedStyles,
     condition: boolean,
     conditionalStyle: SerializedStyles
-): SerializedStyles =>
-    css`
-        ${baseStyle};
-        ${condition && conditionalStyle};
-    `;
+): SerializedStyles => css`
+    ${baseStyle};
+    ${condition && conditionalStyle};
+`;
 
 export default applyConditionalStyles;

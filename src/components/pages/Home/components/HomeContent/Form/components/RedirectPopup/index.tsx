@@ -7,6 +7,9 @@ import { getCountryConfig } from "Constants/countryConfig";
 import { Alpha2 } from "Constants/countryConfig/enums";
 import { EVENTS, sendEvent } from "Services/googleAnalytics";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { CacheManager } from "utils/cacheManager";
+import { deleteCookie } from "cookies-next";
 import styles from "./styles";
 
 interface RedirectPopupProps {
@@ -17,8 +20,42 @@ interface RedirectPopupProps {
 
 export default function RedirectPopup(props: RedirectPopupProps): JSX.Element {
     const { path, selectedCountry, onClose } = props;
-
     const countryConfig = getCountryConfig(selectedCountry, false);
+
+    const handleCancel = async (): Promise<void> => {
+        try {
+            // Clear all app data and cookies
+            const cookiesToClear = [
+                "_unicityToken_v5_enroll",
+                "refId",
+                "language",
+                "allowGuide",
+                "autobots",
+                "enrollVerbosLogger"
+            ];
+
+            cookiesToClear.forEach(cookieName => {
+                deleteCookie(cookieName);
+            });
+
+            // Clear cache
+            await CacheManager.clearAllCache(true);
+            // Call onClose before reloading
+            onClose();
+            // Reload the page
+            if (typeof window !== "undefined") {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error("Error clearing data:", error);
+            // Call onClose even if there's an error
+            onClose();
+            // Still reload the page even if there's an error
+            if (typeof window !== "undefined") {
+                window.location.reload();
+            }
+        }
+    };
 
     return (
         <div css={styles}>
@@ -63,13 +100,13 @@ export default function RedirectPopup(props: RedirectPopupProps): JSX.Element {
                         </PrimaryButton>
                         <div
                             className="cancel"
-                            onClick={onClose}
+                            onClick={handleCancel}
                             role="button"
                             tabIndex={0}
                             data-testid="home_modal_cancel"
                             onKeyDown={(e): void => {
                                 if (e.key === "Enter" || e.key === "Space") {
-                                    onClose();
+                                    handleCancel();
                                 }
                             }}
                         >

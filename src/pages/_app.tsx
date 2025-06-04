@@ -1,17 +1,7 @@
 import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
 import { useCountryConfig } from "Constants/countryConfig";
-import { OrderProvider } from "Contexts/OrderContext";
-import { ProductProvider } from "Contexts/ProductContext";
-import { UserProvider } from "Contexts/UserContext";
-import { TranslationProvider, useTranslations } from "Contexts/translation";
-import useConsent from "Hooks/useConsent";
-import { initializeLoggingService } from "Services/datadog/datadogLoggingService";
-import initializeDatadog from "Services/datadog/initializeDatadog";
-import { sendEvent } from "Services/googleAnalytics";
-import { initVlog } from "Services/utils/verboseLogger";
+import { useTranslations } from "Contexts/translation";
 import globalStyles from "Styles/global";
-import { lightTheme } from "Styles/theme/themes";
 import AppHead from "components/common/AppHead";
 import { getCookie, setCookie } from "cookies-next";
 import {
@@ -24,14 +14,15 @@ import Script from "next/script";
 import {
     ComponentType,
     MutableRefObject,
-    ReactNode,
     useEffect,
-    useRef
+    useRef,
+    useState
 } from "react";
 import TagManager from "react-gtm-module";
 import { getAuthToken, validateAuthToken } from "utils/authUtils";
-import { CacheManager } from "utils/cacheManager";
 import { KNOWN_ROUTES } from "../constants/routes";
+import useInitializeApp from "../hooks/useAppInitialization";
+import AppProviders from "../providers/AppProviders";
 import "../styles/globals.css";
 import { clearAllAppData } from "../utils/cookieUtils";
 import {
@@ -41,19 +32,6 @@ import {
     validateThankYouAccess,
     validateThankYouPage
 } from "../utils/routeValidation";
-import { useEnroller, useInitialReferrer } from "./_app.hooks";
-
-if (typeof document !== "undefined" && process.env.NEXT_PUBLIC_GTM_ID) {
-    TagManager.initialize({
-        gtmId: process.env.NEXT_PUBLIC_GTM_ID,
-        dataLayer: {
-            consent_mode: {
-                analytics_storage: "denied",
-                ad_storage: "denied"
-            }
-        }
-    });
-}
 
 interface AppProps {
     Component: React.ComponentType<AppProps["pageProps"]>;
@@ -63,19 +41,9 @@ interface AppProps {
     };
 }
 
-interface AppWrapperProps {
-    children?: ReactNode;
-    Component: ComponentType<AppProps["pageProps"]>;
-    pageProps: AppProps["pageProps"];
-}
-
-interface AppProvidersProps {
-    children: ReactNode;
-}
-
 declare global {
     interface Window {
-        onloadCallback: () => void;
+        onloadCallback?: () => void;
         gtag: (
             command: string,
             action: string,
@@ -84,11 +52,59 @@ declare global {
     }
 }
 
+interface ResetResult {
+    shouldRedirect: boolean;
+    redirectPath?: string;
+    resetScript?: string;
+}
+
+function handleResetOperation(appContext: NextAppContext): ResetResult {
+    clearAllAppData(appContext.ctx);
+
+    if (typeof window !== "undefined") {
+        // Clear local storage
+        localStorage.clear();
+        // Clear session storage except translation context
+        const translationContext = sessionStorage.getItem("translationContext");
+        sessionStorage.clear();
+        if (translationContext) {
+            sessionStorage.setItem("translationContext", translationContext);
+        }
+    }
+
+    return {
+        shouldRedirect: true,
+        redirectPath: "/home",
+        resetScript: `<script>
+            sessionStorage.clear();
+            window.location.href = '/home';
+        </script>`
+    };
+}
+
 function App({ Component, pageProps }: AppProps): JSX.Element {
     const { query: language } = useRouter();
     const isInitialMount = useRef(true);
     const router = useRouter();
     const routeChangeTimeout = useRef<NodeJS.Timeout>();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+
+        // Initialize TagManager in useEffect
+        if (process.env.NEXT_PUBLIC_GTM_ID) {
+            TagManager.initialize({
+                gtmId: process.env.NEXT_PUBLIC_GTM_ID,
+                dataLayer: {
+                    consent_mode: {
+                        analytics_storage: "denied",
+                        ad_storage: "denied"
+                    }
+                }
+            });
+        }
+    }, []);
 
     useEffect(() => {
         const timeoutRef = routeChangeTimeout;
@@ -126,12 +142,14 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
             {globalStyles}
             <CssBaseline />
             <AppProviders>
-                <AppContent
-                    Component={Component}
-                    pageProps={pageProps}
-                    isInitialMount={isInitialMount}
-                    language={language}
-                />
+                {isClient ? (
+                    <AppContent
+                        Component={Component}
+                        pageProps={pageProps}
+                        isInitialMount={isInitialMount}
+                        language={language}
+                    />
+                ) : null}
             </AppProviders>
         </div>
     );
@@ -156,148 +174,56 @@ function AppContent({
     const isCookieEnabled = Boolean(countryConfig?.marketExceptions?.useCookie);
     setCookie("isCookieEnabled", isCookieEnabled);
 
-    useInitializeApp(isInitialMount, country, language, isCookieEnabled);
-    useReCaptchaInitialization();
+    useInitializeApp({
+        isInitialMount,
+        country,
+        language,
+        isCookieEnabled
+    });
 
     return <Component {...pageProps} />;
 }
 
-function useReCaptchaInitialization(): void {
-    useEffect((): void => {
+function ReCaptchaScript(): JSX.Element {
+    useEffect(() => {
+        // Define the onloadCallback function
         window.onloadCallback = (): void => {
-            // ReCaptcha loaded callback
+            // This function will be called when reCAPTCHA is loaded
+            console.log("reCAPTCHA loaded successfully");
+        };
+
+        return () => {
+            // Cleanup
+            if (window.onloadCallback) {
+                delete window.onloadCallback;
+            }
         };
     }, []);
-}
 
-function ReCaptchaScript(): JSX.Element {
     return (
         <Script
             src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
             strategy="lazyOnload"
-            onLoad={(): void => {
-                if (window.onloadCallback) {
-                    window.onloadCallback();
-                }
-            }}
         />
     );
 }
 
-function useInitializeApp(
-    isInitialMount: MutableRefObject<boolean>,
-    country: string,
-    language: { [key: string]: string | string[] | undefined },
-    isCookieEnabled: boolean
-): void {
-    const mountRef = useRef(isInitialMount.current);
-
-    useCacheInitialization();
-    useAnalyticsInitialization(mountRef, country, language);
-    useMonitoringInitialization(isCookieEnabled);
-    useConsent();
-
-    initVlog();
-    useEnroller();
-    useInitialReferrer();
-}
-
-function useCacheInitialization(): void {
-    useEffect(() => {
-        const initializeCache = async (): Promise<void> => {
-            try {
-                await CacheManager.handleVersionMismatch();
-                await CacheManager.checkPendingReload();
-            } catch (error) {
-                // console.error("Error initializing cache:", error);
-            }
-        };
-        initializeCache();
-    }, []);
-}
-
-function useAnalyticsInitialization(
-    mountRef: MutableRefObject<boolean>,
-    country: string,
-    language: { [key: string]: string | string[] | undefined }
-): void {
-    const localMountRef = useRef(mountRef.current);
-    const consentData = useConsent();
-
-    useEffect(() => {
-        const shouldSendEvent = !localMountRef.current;
-        localMountRef.current = false;
-
-        if (shouldSendEvent) {
-            const languageFromCookie = getCookie("language") || language;
-            const countryFromCookie = getCookie("country") || country;
-
-            if (typeof window !== "undefined" && window.gtag) {
-                const analyticsConsent =
-                    consentData?.analytics === "yes" ? "granted" : "denied";
-                window.gtag("consent", "update", {
-                    analytics_storage: analyticsConsent,
-                    ad_storage: analyticsConsent
-                });
-            }
-
-            sendEvent("page_configration", {
-                country: countryFromCookie,
-                language: languageFromCookie
-            });
-        }
-    }, [country, language, consentData]);
-}
-
-function useMonitoringInitialization(isCookieEnabled: boolean): void {
-    const consentData = useConsent();
-
-    const isValidEnvironment = ["production", "development"].includes(
-        process.env.NEXT_PUBLIC_DATADOG_ENV || ""
-    );
-
-    useEffect(() => {
-        if (!isValidEnvironment) return;
-
-        const hasConsent = consentData?.analytics === "yes";
-        const shouldInitialize = !isCookieEnabled || hasConsent;
-
-        if (shouldInitialize) {
-            // Initialize Datadog RUM first
-            initializeDatadog();
-            // Then initialize logging service
-            setTimeout(() => {
-                initializeLoggingService();
-            }, 0);
-        }
-    }, [isValidEnvironment, isCookieEnabled, consentData?.analytics]);
-}
-
-function AppProviders({ children }: AppProvidersProps): JSX.Element {
-    return (
-        <ThemeProvider theme={lightTheme}>
-            <TranslationProvider>
-                <ProductProvider>
-                    <OrderProvider>
-                        <UserProvider>{children}</UserProvider>
-                    </OrderProvider>
-                </ProductProvider>
-            </TranslationProvider>
-        </ThemeProvider>
-    );
-}
-
-function AppWrapper(props: AppWrapperProps): JSX.Element {
+function AppWrapper(props: AppProps): JSX.Element {
     return <App {...props} />;
 }
 
 async function handleRouteValidation(
     path: string,
     query: { [key: string]: string | string[] | undefined },
-    hasUserToken: boolean
+    hasUserToken: boolean,
+    appContext: NextAppContext
 ): Promise<{ shouldRedirect: boolean; redirectPath?: string }> {
     if (path === "/reset") {
-        return { shouldRedirect: true, redirectPath: "/home" };
+        const resetResult = handleResetOperation(appContext);
+        return {
+            shouldRedirect: resetResult.shouldRedirect,
+            redirectPath: resetResult.redirectPath
+        };
     }
 
     if (validateProtectedRoute(path) && !hasUserToken) {
@@ -326,53 +252,55 @@ async function handleRouteValidation(
     return { shouldRedirect: false };
 }
 
-AppWrapper.getInitialProps = async (
-    appContext: NextAppContext
-): Promise<{ pageProps: AppProps["pageProps"] }> => {
-    const path = appContext.ctx.pathname || "/";
+export async function getServerSideProps(context: any): Promise<{
+    props: {
+        pageProps: AppProps["pageProps"];
+    };
+}> {
+    const path = context.pathname || "/";
     const defaultPageProps: AppProps["pageProps"] = {
         userToken: "",
         refIdCookie: null
     };
 
-    if (!appContext.ctx.res) {
-        return { pageProps: defaultPageProps };
+    if (!context.res) {
+        return { props: { pageProps: defaultPageProps } };
     }
 
     const userToken = getAuthToken();
     const hasUserToken = validateAuthToken(userToken);
-    const refIdCookie = getCookie("refId", appContext.ctx) ?? null;
-    const { query } = appContext.ctx;
+    const refIdCookie = getCookie("refId", context) ?? null;
+    const { query } = context;
 
     const { shouldRedirect, redirectPath } = await handleRouteValidation(
         path,
         query,
-        hasUserToken
+        hasUserToken,
+        context
     );
 
     if (shouldRedirect && redirectPath) {
         if (path === "/reset") {
-            clearAllAppData(appContext.ctx);
-            appContext.ctx.res.setHeader("Content-Type", "text/html");
-            appContext.ctx.res.write(`<script>
-                sessionStorage.clear();
-                window.location.href = '/home';
-            </script>`);
+            const resetResult = handleResetOperation(context);
+            context.res.setHeader("Content-Type", "text/html");
+            context.res.write(resetResult.resetScript);
         } else {
-            appContext.ctx.res.writeHead(302, { Location: redirectPath });
+            context.res.writeHead(302, { Location: redirectPath });
         }
-        appContext.ctx.res.end();
-        return { pageProps: defaultPageProps };
+        context.res.end();
+        return { props: { pageProps: defaultPageProps } };
     }
 
     return {
-        pageProps: {
-            ...defaultPageProps,
-            userToken,
-            refIdCookie
+        props: {
+            pageProps: {
+                ...defaultPageProps,
+                userToken,
+                refIdCookie
+            }
         }
     };
-};
+}
 
 const launchDarklyClientSideID =
     process.env.NEXT_PUBLIC_LAUNCHDARKLY_CLIENT_ID || null;
@@ -383,6 +311,39 @@ export const useFlags = launchDarklyClientSideID
     ? ldUseFlags
     : useFlagsFallback;
 
+// Custom LaunchDarkly initialization wrapper
+const withCustomLDProvider = (
+    WrappedComponent: ComponentType<AppProps>
+): ComponentType<AppProps> => {
+    function CustomLDProvider(props: AppProps): JSX.Element {
+        const [isInitialized, setIsInitialized] = useState(false);
+
+        useEffect(() => {
+            if (launchDarklyClientSideID) {
+                // Set a timeout to handle initialization
+                const timeout = setTimeout(() => {
+                    setIsInitialized(true);
+                }, 1000); // 1 second timeout
+
+                return () => clearTimeout(timeout);
+            }
+            return undefined;
+        }, []);
+
+        if (!launchDarklyClientSideID) {
+            return <WrappedComponent {...props} />;
+        }
+
+        return (
+            <div style={{ display: isInitialized ? "block" : "none" }}>
+                <WrappedComponent {...props} />
+            </div>
+        );
+    }
+
+    return CustomLDProvider;
+};
+
 const AppWrapperWithLD = launchDarklyClientSideID
     ? withLDProvider({
           clientSideID: launchDarklyClientSideID,
@@ -392,7 +353,11 @@ const AppWrapperWithLD = launchDarklyClientSideID
           },
           options: {
               streaming: false,
-              fetchGoals: false
+              fetchGoals: false,
+              bootstrap: "localStorage",
+              sendEvents: true,
+              diagnosticOptOut: true,
+              allAttributesPrivate: true
           }
       })(AppWrapper as unknown as ComponentType)
     : AppWrapper;

@@ -49,6 +49,11 @@ exports[`Form renders correctly 1`] = `
               Austria - Österreich
             </option>
             <option
+              value="BH"
+            >
+              Bahrain
+            </option>
+            <option
               value="BE"
             >
               Belgium - Belgique / België
@@ -159,6 +164,16 @@ exports[`Form renders correctly 1`] = `
               Japan - 日本
             </option>
             <option
+              value="JO"
+            >
+              Jordan
+            </option>
+            <option
+              value="KW"
+            >
+              Kuwait
+            </option>
+            <option
               value="LA"
             >
               Laos
@@ -214,6 +229,11 @@ exports[`Form renders correctly 1`] = `
               Norway - Norge
             </option>
             <option
+              value="OM"
+            >
+              Oman
+            </option>
+            <option
               value="PH"
             >
               Philippines
@@ -232,6 +252,11 @@ exports[`Form renders correctly 1`] = `
               value="PR"
             >
               Puerto Rico
+            </option>
+            <option
+              value="QA"
+            >
+              Qatar
             </option>
             <option
               value="RO"
@@ -292,6 +317,11 @@ exports[`Form renders correctly 1`] = `
               value="TR"
             >
               Turkey
+            </option>
+            <option
+              value="AE"
+            >
+              United Arab Emirates
             </option>
             <option
               value="GB"

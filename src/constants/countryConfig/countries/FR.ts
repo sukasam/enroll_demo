@@ -10,7 +10,11 @@ const marketExceptions: MarketExceptions = {
     ...euConfig.marketExceptions,
     notificationType: optInNotificationTypes.EMAIL,
     zipLength: 5,
-    zipPattern: /^\d{5}$/
+    zipPattern: /^\d{5}$/,
+    paymentOptions: {
+        ...euConfig.marketExceptions.paymentOptions,
+        hasKlarna: true
+    }
 };
 
 const config: CountryConfig = {

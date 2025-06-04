@@ -26,15 +26,14 @@ jest.mock("@mui/material", () => ({
 jest.mock(
     "Components/shared/LocalImage",
     () =>
-        ({ src, alt = "", ...props }) =>
-            (
-                <img
-                    data-testid={`mock-image-${src}`}
-                    src={src}
-                    alt={alt}
-                    {...props}
-                />
-            )
+        ({ src, alt = "", ...props }) => (
+            <img
+                data-testid={`mock-image-${src}`}
+                src={src}
+                alt={alt}
+                {...props}
+            />
+        )
 );
 
 jest.mock("./styles", () => "mock-styles");

@@ -165,7 +165,7 @@ describe("getServerSideProps", () => {
         jest.clearAllMocks();
         (getCookie as jest.Mock).mockImplementation(
             (key: string) =>
-                ({ country: "US", language: "en", refId: null }[key] || null)
+                ({ country: "US", language: "en", refId: null })[key] || null
         );
     });
 

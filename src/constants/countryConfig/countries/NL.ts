@@ -10,7 +10,8 @@ const marketExceptions: MarketExceptions = {
     ...euConfig.marketExceptions,
     paymentOptions: {
         ...euConfig.marketExceptions.paymentOptions,
-        hasPayPal: false
+        hasPayPal: false,
+        hasKlarna: true
     },
     zipLength: 7,
     zipPattern: /^\d{4} ?[A-Z]{2}$/,

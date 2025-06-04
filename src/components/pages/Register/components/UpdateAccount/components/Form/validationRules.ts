@@ -8,6 +8,8 @@ const validationRules = {
     },
     firstName: { required: "First name is required" },
     lastName: { required: "Last name is required" },
+    fullName: { required: "Full name is required" },
+    fullNameEn: { required: "Full name in English is required" },
     email: { required: "Email is required", pattern: /^\S+@\S+\.\S+$/ }
 };
 

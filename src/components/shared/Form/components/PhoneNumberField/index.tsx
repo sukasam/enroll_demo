@@ -1,7 +1,9 @@
+/** @jsxImportSource @emotion/react */
 import { Alpha2 } from "Constants/countryConfig/enums";
 import { Controller } from "react-hook-form";
 import PhoneInput, { Country } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import styles from "./styles";
 
 interface PhoneNumberFieldProps {
     label: string;
@@ -26,7 +28,7 @@ function PhoneNumberField({
     ...rest
 }: PhoneNumberFieldProps): JSX.Element {
     return (
-        <div className={`formField ${className}`} {...rest}>
+        <div className={`formField ${className}`} {...rest} css={styles}>
             <label htmlFor={name} className="label">
                 {label}
             </label>
@@ -51,7 +53,9 @@ function PhoneNumberField({
                     />
                 )}
             />
-            <p className={`error ${error ? "active" : null}`}>{error}</p>
+            <p className={`error ${error ? "active" : ""}`}>
+                {error || "\u00A0"}
+            </p>
         </div>
     );
 }

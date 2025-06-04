@@ -25,7 +25,7 @@ const config: CountryConfig = {
     alpha2: Alpha2.OM,
     isSupported: false,
     name: "Oman",
-    redirect: undefined,
+    redirect: "https://ushop-link.unicity.com/mena/enroll",
     languages: [
         {
             code: "en",

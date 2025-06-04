@@ -57,7 +57,15 @@ const marketExceptions: MarketExceptions = {
     updateMainAddress: true,
     notificationType: undefined,
     showMemberApplicationGuide: true,
-    hiddenEnrollerId: true
+    hiddenEnrollerId: true,
+    formCreateAccount: [
+        "fullName",
+        "fullNameEn",
+        "phoneNumber",
+        "email",
+        "password"
+    ],
+    formUpdateAccount: ["fullName", "fullNameEn", "phoneNumber", "email"]
 };
 
 const config: CountryConfig = {

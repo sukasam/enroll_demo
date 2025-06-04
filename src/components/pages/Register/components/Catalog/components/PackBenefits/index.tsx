@@ -1,19 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import Checkmark from "Components/shared/Checkmark";
 import { useTranslate } from "Components/shared/Translate";
+import { Alpha2 } from "Constants/countryConfig/enums";
 import { CompletePack } from "Constants/countryConfig/types";
 import { getCookie } from "cookies-next";
 import useProductConfig from "Hooks/useProductConfig";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
+import { toAlpha3 } from "Services/locale";
 import styles from "./styles";
 
 function PackBenefits(): JSX.Element {
     const productConfig = useProductConfig();
     const t = useTranslate();
 
-    const country = getCookie("country");
+    const country = getCookie("country") as Alpha2;
+    const alpha3Country = toAlpha3(country);
 
     const filteredPacks = useMemo(() => {
         if (!productConfig) {
@@ -27,6 +30,10 @@ function PackBenefits(): JSX.Element {
     const description = t("catalog_modal_business_builder_description");
     const benefits = filteredPacks?.flatMap(pack =>
         pack.mainFeatures.map(mainFeature => t(mainFeature))
+    );
+    const linkLearnMore = t("right_column_learn_more_link").replace(
+        "{{alpha2}}",
+        alpha3Country.toLowerCase() || "usa"
     );
 
     return (
@@ -43,7 +50,7 @@ function PackBenefits(): JSX.Element {
             />
             <div className="list">
                 {benefits
-                    ?.slice(0, country === "JP" ? 3 : 4)
+                    ?.slice(0, country === "JP" || country === "PH" ? 3 : 4)
                     .map((benefit, index) => (
                         <div className="list-item" key={benefit}>
                             <div
@@ -63,7 +70,7 @@ function PackBenefits(): JSX.Element {
             </div>
             <div className="slide-link">
                 <Link
-                    href={t("right_column_learn_more_link")}
+                    href={linkLearnMore}
                     target="_blank"
                     rel="noreferrer noopener"
                     data-testid="right_column_learn_more"
